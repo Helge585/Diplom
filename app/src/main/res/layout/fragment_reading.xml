@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ReadingFragment">
 
-    <TextView
-        android:id="@+id/textViewTranslate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

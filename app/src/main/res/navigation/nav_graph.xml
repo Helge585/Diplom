@@ -34,5 +34,10 @@
             app:argType="string"
             android:defaultValue="AAAAA" />
     </fragment>
+    <fragment
+        android:id="@+id/translatingFragment"
+        android:name="com.example.diplom_0_1.TranslatingFragment"
+        android:label="fragment_translating"
+        tools:layout="@layout/fragment_translating" />
 
 </navigation>

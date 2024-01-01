@@ -15,6 +15,14 @@
         android:layout_weight="0"
         style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
+    <fragment
+        android:id="@+id/translatingFragment"
+        android:name="com.example.diplom_0_1.TranslatingFragment"
+        android:label="fragment_translating"
+        tools:layout="@layout/fragment_translating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

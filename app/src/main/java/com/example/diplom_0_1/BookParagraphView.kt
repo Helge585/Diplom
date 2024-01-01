@@ -3,9 +3,7 @@ package com.example.diplom_0_1
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.widget.EditText
-import android.widget.TextView
-
+import androidx.annotation.RequiresPermission.Read
 
 class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
     constructor(context: Context) : super(context) {}
@@ -15,6 +13,12 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
         attrs,
         defStyleAttr
     ) {
+    }
+
+    private lateinit var fragment: ReadingFragment
+
+    fun setOnFragment(fr : ReadingFragment) {
+        fragment = fr
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -44,6 +48,7 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
                     println("!!!  " + start + " " + end)
                     //println(v.toString())
                 }
+                fragment.sendTranslatedWordToMainActivity(text.toString().substring(start, end))
             }
         }
         return super.onTouchEvent(event)
