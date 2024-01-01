@@ -11,6 +11,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import javax.xml.parsers.SAXParserFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +29,8 @@ class TranslatingFragment : Fragment() {
     private var param2: String? = null
     private lateinit var textView : TextView
 
+    private var translatedText = "TRRRANSLATTE"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -43,15 +46,30 @@ class TranslatingFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_translating, container, false)
         textView = view.findViewById(R.id.textViewTransalting)
+        textView.setText(translatedText)
         return view
     }
 
     fun OnRecievedTranslatedWordFromMainActivity(word : String) {
-        textView.setText(word)
+        //textView.setText(word)
         translate(word)
+        textView.setText(translatedText)
     }
 
-    fun translate(word : String) {
+    private fun parseResponse(response : String) {
+        val factory = SAXParserFactory.newInstance()
+        val saxParser = factory.newSAXParser()
+        val responseParser = ResponseParser()
+        saxParser.parse(response.byteInputStream(), responseParser)
+//        context?.applicationContext?.contentResolver?.openInputStream()?.use { inputStream ->
+//            saxParser.parse(inputStream, fB2Parser)
+//        }
+        translatedText = responseParser.getWords().toString()
+        Log.i("Parsed Response", translatedText)
+
+    }
+
+    private fun translate(word : String) {
         Thread {
             //val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup")
             val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94&lang=en-ru&text=$word")
@@ -77,6 +95,7 @@ class TranslatingFragment : Fragment() {
                 println(response.toString())
                 //translatedWord = response.toString()
                 Log.i("Response", response.toString())
+                parseResponse(response.toString())
             } else {
 
             }
