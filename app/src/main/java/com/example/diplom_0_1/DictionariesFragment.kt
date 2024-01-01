@@ -1,10 +1,13 @@
 package com.example.diplom_0_1
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.navigation.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +23,7 @@ class DictionariesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var linearLayout : LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,25 @@ class DictionariesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dictionaries, container, false)
+        val view = inflater.inflate(R.layout.fragment_dictionaries, container, false)
+
+        linearLayout = view.findViewById(R.id.linearLayoutDicts)
+
+        val db = (activity as MainActivity).dbManager.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM Dictionaries", null)
+        while (cursor.moveToNext()) {
+            val id = cursor.getInt(0)
+            val name = cursor.getString(1)
+            val dw = DictionaryView(id, name, context)
+            dw.setOnClickListener {
+                //view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
+            }
+            linearLayout.addView(dw)
+        }
+        cursor.close()
+        db.close()
+
+        return view
     }
 
     companion object {

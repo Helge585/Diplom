@@ -1,6 +1,7 @@
 package com.example.diplom_0_1
 
 import android.app.Activity.RESULT_OK
+import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -90,6 +91,7 @@ class BooksFragment : Fragment() {
             if (result.resultCode == RESULT_OK) {
                 val uri: Uri? = result.data?.data
                 if(uri != null){
+                    activity?.contentResolver?.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     BookReader.setCurrentBook(uri, context)
                     val bookAnnotation = BookReader.getBookAnnotation()
                     if (bookAnnotation != null) {
@@ -99,7 +101,14 @@ class BooksFragment : Fragment() {
                             view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
                         }
                         linearLayout.addView(bookAnnottationView)
-                        saveBook(bookAnnotation)
+//                        saveBook(bookAnnotation)
+                        val db = (activity as MainActivity).dbManager.writableDatabase
+                        val cv = ContentValues()
+                        cv.put("uri", uri.toString())
+                        cv.put("name", bookAnnotation.bookName)
+                        cv.put("author", bookAnnotation.authorName)
+                        db.insert("Books", null, cv)
+                        db.close()
                     }
                 } else {
 
@@ -109,14 +118,31 @@ class BooksFragment : Fragment() {
             }
         }
 
-        getBookAnnotations()?.forEach {
-            val b = BookAnnotationView(it, context)
-            val arr = arrayOf(it.authorName, it.bookName)
-            b.setOnClickListener{
+        val db = (activity as MainActivity).dbManager.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM books", null)
+        while (cursor.moveToNext()) {
+            val uri = Uri.parse(cursor.getString(1))
+            val name = cursor.getString(2)
+            val author = cursor.getString(3)
+            val bw = BookAnnotationView(BookAnnotation(name, author, uri), context)
+            bw.setOnClickListener {
                 view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
+                (it as BookAnnotationView).bookAnnotation.uri?.let { BookReader.setCurrentBook(it, context) }
+
             }
-            linearLayout.addView(b)
+            linearLayout.addView(bw)
         }
+        cursor.close()
+        db.close()
+
+//        getBookAnnotations()?.forEach {
+//            val b = BookAnnotationView(it, context)
+//            val arr = arrayOf(it.authorName, it.bookName)
+//            b.setOnClickListener{
+//                view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
+//            }
+//            linearLayout.addView(b)
+//        }
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)

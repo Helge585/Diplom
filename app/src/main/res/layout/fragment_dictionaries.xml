@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".DictionariesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearLayoutDicts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="40sp"
-        android:gravity="center"
-        android:text="Dictionaries" />
-
+        android:orientation="vertical"></LinearLayout>
 </FrameLayout>

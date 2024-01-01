@@ -10,13 +10,13 @@ import javax.xml.parsers.SAXParserFactory
 
 object BookReader {
     @JvmStatic
-    private lateinit var uri : Uri
+    private  var uri : Uri? = null
     @JvmStatic
-    private lateinit var bookAnnotation: BookAnnotation
+    private  var bookAnnotation: BookAnnotation? = null
     @JvmStatic
-    private lateinit var bookBody: String
+    private  var bookBody: String? = null
     @JvmStatic
-    private lateinit var bookBodyParagraphes : List<String>
+    private  var bookBodyParagraphes : List<String>? = null
 
 
     @JvmStatic
@@ -26,7 +26,7 @@ object BookReader {
 
     @JvmStatic
     fun getBookBodyParagraphesList() : List<String> {
-        return if (bookBodyParagraphes != null) { bookBodyParagraphes } else { listOf("Nema") }
+        return bookBodyParagraphes ?: listOf("Nema")
     }
 
     @JvmStatic
@@ -37,8 +37,8 @@ object BookReader {
     @JvmStatic
     fun setCurrentBook(_uri: Uri, context: Context?) {
         uri = _uri
-        parseBook(uri, context)
-        bookBody = parsePlainTextByURI(uri, context)
+        parseBook(_uri, context)
+        bookBody = parsePlainTextByURI(_uri, context)
     }
 
     @JvmStatic
@@ -52,7 +52,7 @@ object BookReader {
             saxParser.parse(inputStream, fB2Parser)
         }
         bookAnnotation = fB2Parser.getBookAnnotation()
-        bookAnnotation.uri = uri
+        bookAnnotation?.uri = uri
         bookBodyParagraphes = fB2Parser.getBookBodyParagraphes()
     }
 

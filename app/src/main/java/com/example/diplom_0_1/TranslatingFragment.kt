@@ -1,11 +1,16 @@
 package com.example.diplom_0_1
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,8 +48,40 @@ class TranslatingFragment : Fragment() {
 
     fun OnRecievedTranslatedWordFromMainActivity(word : String) {
         textView.setText(word)
+        translate(word)
     }
 
+    fun translate(word : String) {
+        Thread {
+            //val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup")
+            val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94&lang=en-ru&text=$word")
+
+            val con = url.openConnection() as HttpURLConnection
+            con.setRequestMethod("GET")
+//                con.setRequestProperty("key", "dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94")
+//                con.setRequestProperty("lang", "en-ru")
+//                con.setRequestProperty("text", selectedText.toString())
+
+            val responseCode = con.responseCode
+            println("GET Response Code :: $responseCode")
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                val iinn = BufferedReader(InputStreamReader(con.inputStream))
+                var inputLine: String?
+                val response = StringBuffer()
+                while (iinn.readLine().also { inputLine = it } != null) {
+                    response.append(inputLine)
+                }
+                iinn.close()
+
+
+                println(response.toString())
+                //translatedWord = response.toString()
+                Log.i("Response", response.toString())
+            } else {
+
+            }
+        }.start()
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

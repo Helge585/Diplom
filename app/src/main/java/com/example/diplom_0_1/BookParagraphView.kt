@@ -34,10 +34,16 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
                 var start = position
                 var end = position
                 val text = layout.text.toString()
-                while (start > 0 && text[start - 1] != ' ') {
+//                while (start > 0 && text[start - 1] != ' ') {
+//                    start--
+//                }
+                while (start > 0 && text[start - 1].isLetter()) {
                     start--
                 }
-                while (end < text.length && text[end] != ' ') {
+//                while (end < text.length && text[end] != ' ') {
+//                    end++
+//                }
+                while (end < text.length && text[end].isLetter()) {
                     end++
                 }
                 // Выделяем слово
