@@ -2,6 +2,7 @@ package com.example.diplom_0_1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,6 +14,9 @@ class MainActivity : AppCompatActivity() {
 
     private val translator: Translator = Translator()
     public lateinit var dbManager: DBManager
+    public val chooseWordFragment = ChooseWordFragment()
+     var rF : ReadingFragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,8 +42,20 @@ class MainActivity : AppCompatActivity() {
 //
 ////        (supportFragmentManager.findFragmentById(R.id.readingFragment) as ReadingFragment)
 ////            .setTranslator(translator)
+        showChooseWordFragment()
     }
 
+    fun hideFragmentDialog() {
+        rF?.let { it.setSuppressLayoutFlag(false) }
+    }
+    fun setOnReadingFragment(_rF : ReadingFragment) {
+        rF = _rF
+    }
+    fun showChooseWordFragment() {
+        rF?.let { it.setSuppressLayoutFlag(true) }
+        chooseWordFragment.show(supportFragmentManager, "SSS")
+        //rF?.let { it.setSuppressLayoutFlag(false) }
+    }
     fun OnRecievedTranslatedWordFromReadingFragment(word : String) {
         val tF = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
         tF.OnRecievedTranslatedWordFromMainActivity(word)

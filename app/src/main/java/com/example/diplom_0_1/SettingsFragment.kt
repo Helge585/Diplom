@@ -46,39 +46,7 @@ class SettingsFragment : Fragment(), View.OnTouchListener {
         editText = view.findViewById<EditText>(R.id.settingsTextEdit)
         editText.setTextIsSelectable(false)
         //editText.setOnTouchListener(this)
-        editText.setOnTouchListener { v, event ->
 
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
-                    // Получаем координаты нажатия
-                    val x = event.x.toInt()
-                    val y = event.y.toInt()
-                    // Получаем Layout для TextView
-                    val layout = (v as TextView).layout
-                    // Получаем позицию символа, на который нажал пользователь
-                    val position = layout.getOffsetForHorizontal(layout.getLineForVertical(y), x.toFloat())
-                    // Получаем начальную и конечную позиции слова
-                    var start = position
-                    var end = position
-                    val text = layout.text.toString()
-                    while (start > 0 && text[start - 1] != ' ') {
-                        start--
-                    }
-                    while (end < text.length && text[end] != ' ') {
-                        end++
-                    }
-                    // Выделяем слово
-                    if (start != end) {
-                        //textEdit.setSelection(start, end)
-                        (v as EditText).setSelection(start, end)
-                        println("!!!  " + start + " " + end)
-                        println(v.toString())
-                        return@setOnTouchListener true
-                    }
-                }
-            }
-            false
-        }
         return view
     }
 

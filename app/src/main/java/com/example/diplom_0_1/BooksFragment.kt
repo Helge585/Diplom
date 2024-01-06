@@ -63,7 +63,7 @@ class BooksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        println("On destroyView")
+        //println("On destroyView")
     }
 
     override fun onResume() {
@@ -71,14 +71,14 @@ class BooksFragment : Fragment() {
         //linearLayout.removeAllViews()
        // books.forEach { linearLayout.addView(it) }
         //linearLayout.children.forEach { println("!!!!  " + it.toString() + "  !!!!") }
-        println("On resume")
+        //println("On resume")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        println("On createView")
+        //println("On createView")
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_books, container, false)
 

@@ -1,16 +1,17 @@
 package com.example.diplom_0_1
 
-import android.content.Context
+
 import android.os.Bundle
-import android.util.AttributeSet
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,13 +29,14 @@ class ReadingFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var textViewTranslate: TextView
-
+    private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        Log.i("Reading fragment", "on create")
     }
 
     override fun onCreateView(
@@ -43,15 +45,34 @@ class ReadingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_reading, container, false)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView= view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = BookReadingFragmentRecyclerAdapter(BookReader.getBookBodyParagraphesList(), this)
-
+        Log.i("Reading fragment", "on create view")
+        (activity as MainActivity).setOnReadingFragment(this)
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i("Reading fragment", "on destroy view")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("Reading fragment", "on destroy")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("Reading fragment", "on stop")
+    }
     public fun sendTranslatedWordToMainActivity(word : String) {
         (activity as MainActivity).OnRecievedTranslatedWordFromReadingFragment(word)
+    }
+
+    public fun setSuppressLayoutFlag(flag : Boolean) {
+        recyclerView.suppressLayout(flag)
     }
 
     companion object {

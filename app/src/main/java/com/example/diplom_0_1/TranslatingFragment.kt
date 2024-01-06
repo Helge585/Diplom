@@ -23,7 +23,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [TranslatingFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TranslatingFragment : Fragment() {
+class TranslatingFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -47,6 +47,7 @@ class TranslatingFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_translating, container, false)
         textView = view.findViewById(R.id.textViewTransalting)
         textView.setText(translatedText)
+        textView.setOnClickListener(this)
         return view
     }
 
@@ -72,7 +73,7 @@ class TranslatingFragment : Fragment() {
     private fun translate(word : String) {
         Thread {
             //val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup")
-            val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94&lang=en-ru&text=$word")
+            val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94&lang=en-ru&text=$word&flags=4")
 
             val con = url.openConnection() as HttpURLConnection
             con.setRequestMethod("GET")
@@ -101,6 +102,9 @@ class TranslatingFragment : Fragment() {
             }
         }.start()
     }
+    override fun onClick(p0: View?) {
+        (activity as MainActivity).showChooseWordFragment()
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -120,4 +124,6 @@ class TranslatingFragment : Fragment() {
                 }
             }
     }
+
+
 }
