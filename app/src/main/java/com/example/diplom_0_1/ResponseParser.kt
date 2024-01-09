@@ -8,10 +8,14 @@ class ResponseParser() : DefaultHandler() {
     private val TR = "tr"
     private val EX = "ex"
     private val TEXT = "text"
+    private val SYN = "syn"
+    private val MEAN = "mean"
 
     private var inTr = false
     private var inEx = false
     private var inText = false
+    private var inSyn = false
+    private var inMean = false
 
     private var words = mutableListOf<String>()
     private var word = StringBuilder("")
@@ -52,7 +56,7 @@ class ResponseParser() : DefaultHandler() {
 
     override fun characters(ch: CharArray?, start: Int, length: Int){
         //super.characters(ch, start, length)
-        if (inTr && !inEx && inText) {
+        if (inTr && !inEx && !inMean && !inSyn && inText) {
             word.append(ch, start, length)
         }
     }
@@ -71,6 +75,12 @@ class ResponseParser() : DefaultHandler() {
             }
             TEXT -> {
                 inText = status
+            }
+            MEAN -> {
+                inMean = status
+            }
+            SYN -> {
+                inSyn = status
             }
         }
     }

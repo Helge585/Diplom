@@ -2,10 +2,12 @@ package com.example.diplom_0_1
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
@@ -20,18 +22,34 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ChooseWordFragment : DialogFragment() {
+    private lateinit var translatings : Array<String>
+    private lateinit var word : String
+    private var checkedItemIndex = 0
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        word = arguments?.getString("word") ?: ""
+        translatings = arguments?.getStringArray("translatings") as Array<String>
+
+        checkedItemIndex = 0
+
         return activity?.let {
-            // Use the Builder class for convenient dialog construction.
             val builder = AlertDialog.Builder(it)
-            builder.setMessage("Start game")
-                .setPositiveButton("Start") { dialog, id ->
-                    // START THE GAME!
+            builder.setTitle(word)
+                .setSingleChoiceItems(
+                    translatings, checkedItemIndex
+                ) { dialog, item ->
+                    checkedItemIndex = item
+                    //Log.i("ChooseWordFragment", "Choosen item: " + translatings[item])
                 }
-                .setNegativeButton("Cancel") { dialog, id ->
-                    (activity as MainActivity).hideFragmentDialog()
+                .setPositiveButton(
+                    "Далее"
+                ) { dialog, id ->
+                    Log.i("ChooseWordFragment", "Choosen item: " + translatings[checkedItemIndex])
+                    (activity as MainActivity).showDictionariesChoosenDialogFragment(word, translatings[checkedItemIndex])
                 }
-            // Create the AlertDialog object and return it.
+                .setNegativeButton("Отмена") { dialog, id ->
+                }
+
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

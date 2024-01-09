@@ -2,6 +2,7 @@ package com.example.diplom_0_1
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [DictionariesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DictionariesFragment : Fragment() {
+class DictionariesFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var linearLayout : LinearLayout
+    private var dicts = mutableListOf<Dictionary>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +49,10 @@ class DictionariesFragment : Fragment() {
         while (cursor.moveToNext()) {
             val id = cursor.getInt(0)
             val name = cursor.getString(1)
+            val dict = Dictionary(id, name)
+            dicts.add(dict)
             val dw = DictionaryView(id, name, context)
+            dw.setOnClickListener(this)
             dw.setOnClickListener {
                 //view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
             }
@@ -56,9 +61,16 @@ class DictionariesFragment : Fragment() {
         cursor.close()
         db.close()
 
+        (activity as MainActivity).setOnDictionariesFragment(this)
         return view
     }
 
+
+    fun getDictionariesNames() : List<String> {
+        val names = mutableListOf<String>()
+        dicts.forEach { names.add(it.name) }
+        return names
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -77,5 +89,9 @@ class DictionariesFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onClick(p0: View?) {
+        Log.i("DictionariesFragmnet", getDictionariesNames().toString())
     }
 }

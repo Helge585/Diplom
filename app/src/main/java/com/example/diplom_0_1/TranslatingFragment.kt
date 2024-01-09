@@ -30,7 +30,8 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
     private lateinit var textView : TextView
 
     private var translatedText = "TRRRANSLATTE"
-
+    private var currentWord = "Not choosen"
+    private var currentTranslatings = listOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,6 +53,7 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
     }
 
     fun OnRecievedTranslatedWordFromMainActivity(word : String) {
+        currentWord = word
         //textView.setText(word)
         translate(word)
         textView.setText(translatedText)
@@ -65,7 +67,8 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
 //        context?.applicationContext?.contentResolver?.openInputStream()?.use { inputStream ->
 //            saxParser.parse(inputStream, fB2Parser)
 //        }
-        translatedText = responseParser.getWords().toString()
+        currentTranslatings = responseParser.getWords()
+        translatedText = currentTranslatings.toString()
         Log.i("Parsed Response", translatedText)
 
     }
@@ -103,7 +106,7 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
         }.start()
     }
     override fun onClick(p0: View?) {
-        (activity as MainActivity).showChooseWordFragment()
+        (activity as MainActivity).showChooseWordFragment(currentWord, currentTranslatings)
     }
     companion object {
         /**

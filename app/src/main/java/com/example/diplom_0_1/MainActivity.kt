@@ -9,13 +9,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private val translator: Translator = Translator()
     public lateinit var dbManager: DBManager
-    public val chooseWordFragment = ChooseWordFragment()
-     var rF : ReadingFragment? = null
+    private val chooseWordFragment = ChooseWordFragment()
+    private val dictionariesChoosenFragmentDialog = DictionaryChoosenFragmentDialog()
+    private var rF : ReadingFragment? = null
+    private var dF : DictionariesFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 //
 ////        (supportFragmentManager.findFragmentById(R.id.readingFragment) as ReadingFragment)
 ////            .setTranslator(translator)
-        showChooseWordFragment()
     }
 
     fun hideFragmentDialog() {
@@ -51,13 +53,34 @@ class MainActivity : AppCompatActivity() {
     fun setOnReadingFragment(_rF : ReadingFragment) {
         rF = _rF
     }
-    fun showChooseWordFragment() {
+    fun setOnDictionariesFragment(_dF : DictionariesFragment) {
+        dF = _dF
+    }
+    fun showChooseWordFragment(word : String, translatings : List<String>) {
         rF?.let { it.setSuppressLayoutFlag(true) }
-        chooseWordFragment.show(supportFragmentManager, "SSS")
+        val args = Bundle()
+
+        args.putStringArray("translatings", translatings.toTypedArray())
+        args.putString("word", word)
+        chooseWordFragment.arguments = args
+        chooseWordFragment.show(supportFragmentManager, "words")
         //rF?.let { it.setSuppressLayoutFlag(false) }
     }
     fun OnRecievedTranslatedWordFromReadingFragment(word : String) {
         val tF = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
         tF.OnRecievedTranslatedWordFromMainActivity(word)
+    }
+
+    fun showDictionariesChoosenDialogFragment(firstWord : String, secondWord : String) {
+        val args = Bundle()
+        args.putString("firstWord", firstWord)
+        args.putString("secondWord", secondWord)
+        args.putStringArray("dicts", getDictionariesNames().toTypedArray())
+        dictionariesChoosenFragmentDialog.arguments = args
+        dictionariesChoosenFragmentDialog.show(supportFragmentManager, "dicts")
+    }
+    private fun getDictionariesNames() : List<String> {
+        val names = dF?.getDictionariesNames()
+        return names ?: listOf("")
     }
 }
