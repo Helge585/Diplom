@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import com.example.diplom_0_1.DictionaryUtils.Mode
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,12 +39,47 @@ class DictionaryEditingFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dictionary_editing, container, false)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linnn)
-        val dictName = (activity as MainActivity).getCurrentDictionateName()
+        val dictName = DictionaryUtils.getCurrentDictionaryName()
         val dictId = DictionaryDAO.getDictionaryByName(dictName).id
         val words = WordDAO.getAllWordsByDictionaryId(dictId)
-        words.forEach { linearLayout.addView(WordView(it, context)) }
+        val mode = DictionaryUtils.getCurrentMode()
+        val secondWords = mutableListOf<String>()
+        words.forEach { secondWords.add(it.secondWord) }
+        when (mode) {
+            Mode.Edit -> {
+                words.forEach { linearLayout.addView(WordView(it, context)) }
+            }
+            Mode.WritingFirstTest -> {
+                words.forEach { linearLayout.addView(WordTestView(it, context)) }
+            }
+            Mode.WritingSecondTest -> {
+                words.forEach { linearLayout.addView(WordTestView(it, context, Mode.WritingSecondTest)) }
+            }
+            Mode.ChoosingTest -> {
+                words.forEach {
+                    linearLayout.addView(WordChoosingTestView(it, getRandomWords(it.firstWord, secondWords), context))
+                }
+            }
+        }
         (activity as MainActivity).setOnDictionaryEditingFragment(this)
         return view
+    }
+
+    private fun getRandomWords(guessedWord : String, words : List<String>) : List<String> {
+        val randomWords = mutableListOf<String>()
+        var wordCount = 5
+        if (words.size <= 5) {
+            wordCount = words.size - 1
+        }
+        var i = 0;
+        while (i < wordCount) {
+            val randomWord = words.random()
+            if (randomWord != guessedWord && !randomWords.contains(randomWord)) {
+                randomWords.add(randomWord)
+                ++i
+            }
+        }
+        return randomWords.toList()
     }
 
     companion object {

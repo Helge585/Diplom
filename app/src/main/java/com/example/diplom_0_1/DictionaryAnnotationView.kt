@@ -22,9 +22,9 @@ class DictionaryAnnotationView @JvmOverloads constructor(
 //        }
 
         nameView.setText(name)
-        btAdd.setText("A")
-        btOpen.setText("O")
-        btTest.setText("T")
+        btAdd.setText("Удалить")
+        btOpen.setText("Открыть")
+        btTest.setText("Tест")
 
         orientation = HORIZONTAL
         addView(nameView)
@@ -35,5 +35,9 @@ class DictionaryAnnotationView @JvmOverloads constructor(
 
     fun getOpenButton() : Button {
         return btOpen
+    }
+
+    fun getTestButton() : Button {
+        return btTest
     }
 }

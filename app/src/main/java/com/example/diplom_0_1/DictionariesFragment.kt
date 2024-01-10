@@ -52,8 +52,13 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
             val dict = Dictionary(id, name)
             dicts.add(dict)
             val dw = DictionaryAnnotationView(id, name, context)
-            dw.getOpenButton().setOnClickListener {//Log.i("DictionariesFragment", "open button click")
-                openDictionaryForEditing(dw.name) }
+            dw.getOpenButton().setOnClickListener {
+                openDictionary(dw.name, DictionaryUtils.Mode.Edit)
+            }
+            dw.getTestButton().setOnClickListener {
+                //openDictionary(dw.name, DictionaryUtils.Mode.WritingFirstTest)
+                (activity as MainActivity).showTestChoosingFragmentDialog(dw.name)
+            }
             linearLayout.addView(dw)
         }
         cursor.close()
@@ -63,8 +68,9 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
         return view
     }
 
-    fun openDictionaryForEditing(dictName : String) {
-        (activity as MainActivity).setCurrentDictionaryName(dictName)
+    fun openDictionary(dictName : String, mode : DictionaryUtils.Mode) {
+        DictionaryUtils.setCurrentDictionaryName(dictName)
+        DictionaryUtils.setCurrentMode(mode)
         findNavController().navigate(R.id.action_dictionariesFragment_to_dictionaryEditingFragment)
     }
     fun getDictionariesNames() : List<String> {

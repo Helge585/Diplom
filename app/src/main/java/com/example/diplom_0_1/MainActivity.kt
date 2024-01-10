@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     public lateinit var dbManager: DBManager
     private val chooseWordFragment = ChooseWordFragment()
     private val dictionariesChoosenFragmentDialog = DictionaryChoosenFragmentDialog()
+    private val testChoosingFragmentDialog = TestChoosingFragmentDialog()
     private var rF : ReadingFragment? = null
     private var dF : DictionariesFragment? = null
     private var dictionaryEditingFragment : DictionaryEditingFragment? = null
@@ -97,5 +98,12 @@ class MainActivity : AppCompatActivity() {
 
         dictionariesChoosenFragmentDialog.arguments = args
         dictionariesChoosenFragmentDialog.show(supportFragmentManager, "dicts")
+    }
+
+    fun showTestChoosingFragmentDialog(dictName : String) {
+        val args = Bundle()
+        args.putString("dictName", dictName)
+        testChoosingFragmentDialog.arguments = args
+        testChoosingFragmentDialog.show(supportFragmentManager, "tests")
     }
 }

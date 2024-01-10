@@ -3,7 +3,7 @@ package com.example.diplom_0_1
 import android.content.Context
 
 object DBUtils {
-
+    @JvmStatic
     private lateinit var db : DBManager
 
     @JvmStatic

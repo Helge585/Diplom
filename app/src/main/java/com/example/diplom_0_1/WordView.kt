@@ -10,9 +10,10 @@ import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 
 
-class WordView @JvmOverloads constructor(
-    val word: Word, context: Context?, attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
+//class WordView @JvmOverloads constructor(
+//    val word: Word, context: Context?, attrs: AttributeSet? = null
+//) : LinearLayout(context, attrs) {
+class WordView(val word : Word,  context: Context?) : LinearLayout(context) {
 
     private val firstWord : EditText = EditText(context)
     private val secondWord : EditText = EditText(context)
