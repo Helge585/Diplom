@@ -13,18 +13,22 @@ import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
+    private var currentDictionaryName = ""
     private val translator: Translator = Translator()
     public lateinit var dbManager: DBManager
     private val chooseWordFragment = ChooseWordFragment()
     private val dictionariesChoosenFragmentDialog = DictionaryChoosenFragmentDialog()
     private var rF : ReadingFragment? = null
     private var dF : DictionariesFragment? = null
+    private var dictionaryEditingFragment : DictionaryEditingFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         dbManager = DBManager(applicationContext)
+
+        DBUtils.initDataBase(applicationContext)
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -47,8 +51,18 @@ class MainActivity : AppCompatActivity() {
 ////            .setTranslator(translator)
     }
 
+    fun setCurrentDictionaryName(dictName : String) {
+        currentDictionaryName = dictName
+    }
+
+    fun getCurrentDictionateName() : String {
+        return currentDictionaryName
+    }
     fun hideFragmentDialog() {
         rF?.let { it.setSuppressLayoutFlag(false) }
+    }
+    fun setOnDictionaryEditingFragment(_deF : DictionaryEditingFragment) {
+        dictionaryEditingFragment = _deF
     }
     fun setOnReadingFragment(_rF : ReadingFragment) {
         rF = _rF
@@ -75,12 +89,13 @@ class MainActivity : AppCompatActivity() {
         val args = Bundle()
         args.putString("firstWord", firstWord)
         args.putString("secondWord", secondWord)
-        args.putStringArray("dicts", getDictionariesNames().toTypedArray())
+
+        val dicts = DictionaryDAO.getAllDictionaries()
+        val names = mutableListOf<String>()
+        dicts.forEach { names.add(it.name) }
+        args.putStringArray("dicts", names.toTypedArray())
+
         dictionariesChoosenFragmentDialog.arguments = args
         dictionariesChoosenFragmentDialog.show(supportFragmentManager, "dicts")
-    }
-    private fun getDictionariesNames() : List<String> {
-        val names = dF?.getDictionariesNames()
-        return names ?: listOf("")
     }
 }

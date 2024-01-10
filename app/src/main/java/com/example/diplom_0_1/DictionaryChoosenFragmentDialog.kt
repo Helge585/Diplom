@@ -33,6 +33,7 @@ class DictionaryChoosenFragmentDialog : DialogFragment() {
                     "Сохранить"
                 ) { dialog, id ->
                     Log.i("DictionariesChoosenFragmentDialog", "Choosen item: " + dicts[checkedItemIndex])
+                    WordDAO.saveWordByDictName(dicts[checkedItemIndex], firstWord, secondWord)
                 }
                 .setNegativeButton("Назад") { dialog, id ->
                 }

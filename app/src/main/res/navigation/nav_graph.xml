@@ -23,7 +23,11 @@
         android:id="@+id/dictionariesFragment"
         android:name="com.example.diplom_0_1.DictionariesFragment"
         android:label="fragment_dictionaries"
-        tools:layout="@layout/fragment_dictionaries" />
+        tools:layout="@layout/fragment_dictionaries" >
+        <action
+            android:id="@+id/action_dictionariesFragment_to_dictionaryEditingFragment"
+            app:destination="@id/dictionaryEditingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/readingFragment"
         android:name="com.example.diplom_0_1.ReadingFragment"
@@ -39,5 +43,10 @@
         android:name="com.example.diplom_0_1.TranslatingFragment"
         android:label="fragment_translating"
         tools:layout="@layout/fragment_translating" />
+    <fragment
+        android:id="@+id/dictionaryEditingFragment"
+        android:name="com.example.diplom_0_1.DictionaryEditingFragment"
+        android:label="fragment_dictionary_editing"
+        tools:layout="@layout/fragment_dictionary_editing" />
 
 </navigation>

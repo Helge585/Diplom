@@ -1,6 +1,5 @@
 package com.example.diplom_0_1
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,11 +51,9 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
             val name = cursor.getString(1)
             val dict = Dictionary(id, name)
             dicts.add(dict)
-            val dw = DictionaryView(id, name, context)
-            dw.setOnClickListener(this)
-            dw.setOnClickListener {
-                //view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
-            }
+            val dw = DictionaryAnnotationView(id, name, context)
+            dw.getOpenButton().setOnClickListener {//Log.i("DictionariesFragment", "open button click")
+                openDictionaryForEditing(dw.name) }
             linearLayout.addView(dw)
         }
         cursor.close()
@@ -65,8 +63,12 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
         return view
     }
 
-
+    fun openDictionaryForEditing(dictName : String) {
+        (activity as MainActivity).setCurrentDictionaryName(dictName)
+        findNavController().navigate(R.id.action_dictionariesFragment_to_dictionaryEditingFragment)
+    }
     fun getDictionariesNames() : List<String> {
+
         val names = mutableListOf<String>()
         dicts.forEach { names.add(it.name) }
         return names
