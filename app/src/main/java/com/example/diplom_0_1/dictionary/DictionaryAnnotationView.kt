@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.dictionary
 
 import android.content.Context
 import android.util.AttributeSet

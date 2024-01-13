@@ -1,9 +1,11 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.book
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.diplom_0_1.R
+import com.example.diplom_0_1.fragments.ReadingFragment
 
 class BookReadingFragmentRecyclerAdapter(private val pages: List<String>, private val fragment: ReadingFragment) :
     RecyclerView.Adapter<BookReadingFragmentRecyclerAdapter.MyViewHolder>() {

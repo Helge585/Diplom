@@ -1,10 +1,11 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.book
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.diplom_0_1.book.BookAnnotation
 
 
 class BookAnnotationView @JvmOverloads constructor(

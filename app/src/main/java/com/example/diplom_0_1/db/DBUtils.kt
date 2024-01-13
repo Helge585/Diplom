@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.db
 
 import android.content.Context
 

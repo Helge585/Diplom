@@ -1,6 +1,7 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.db
 
 import android.content.ContentValues
+import com.example.diplom_0_1.test.Word
 
 //TABLE Words(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER, first TEXT, second TEXT)
 

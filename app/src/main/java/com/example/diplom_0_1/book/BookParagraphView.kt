@@ -1,9 +1,9 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.book
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import androidx.annotation.RequiresPermission.Read
+import com.example.diplom_0_1.fragments.ReadingFragment
 
 class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
     constructor(context: Context) : super(context) {}

@@ -1,8 +1,6 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.test
 
-import android.widget.LinearLayout
-
-object DictionaryUtils {
+object TestUtils {
     enum class Mode {
         Edit, WritingFirstTest, WritingSecondTest, ChoosingTest
     }

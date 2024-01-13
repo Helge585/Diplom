@@ -1,19 +1,17 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.test
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
-import android.util.AttributeSet
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
+import com.example.diplom_0_1.R
 
 
 //class WordView @JvmOverloads constructor(
 //    val word: Word, context: Context?, attrs: AttributeSet? = null
 //) : LinearLayout(context, attrs) {
-class WordView(val word : Word,  context: Context?) : LinearLayout(context) {
+class WordView(val word : Word, context: Context?) : LinearLayout(context) {
 
     private val firstWord : EditText = EditText(context)
     private val secondWord : EditText = EditText(context)

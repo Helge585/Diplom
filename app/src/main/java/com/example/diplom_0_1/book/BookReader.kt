@@ -1,8 +1,7 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.book
 
 import android.content.Context
 import android.net.Uri
-import android.os.Bundle
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import javax.xml.parsers.SAXParserFactory

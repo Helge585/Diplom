@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.fragments
 
 
 import android.os.Bundle
@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
+import com.example.diplom_0_1.book.BookReader
+import com.example.diplom_0_1.book.BookReadingFragmentRecyclerAdapter
+import com.example.diplom_0_1.MainActivity
+import com.example.diplom_0_1.R
 
 
 // TODO: Rename parameter arguments, choose names that match

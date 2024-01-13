@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.ContentValues
@@ -9,14 +9,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
 import androidx.navigation.findNavController
+import com.example.diplom_0_1.book.BookAnnotation
+import com.example.diplom_0_1.book.BookAnnotationView
+import com.example.diplom_0_1.book.BookReader
+import com.example.diplom_0_1.MainActivity
+import com.example.diplom_0_1.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match
@@ -127,7 +128,12 @@ class BooksFragment : Fragment() {
             val bw = BookAnnotationView(BookAnnotation(name, author, uri), context)
             bw.setOnClickListener {
                 view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
-                (it as BookAnnotationView).bookAnnotation.uri?.let { BookReader.setCurrentBook(it, context) }
+                (it as BookAnnotationView).bookAnnotation.uri?.let {
+                    BookReader.setCurrentBook(
+                        it,
+                        context
+                    )
+                }
 
             }
             linearLayout.addView(bw)

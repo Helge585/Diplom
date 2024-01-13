@@ -1,20 +1,16 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.test
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
-import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import com.example.diplom_0_1.DictionaryUtils.Mode
+import com.example.diplom_0_1.R
+import com.example.diplom_0_1.test.TestUtils.Mode
 
 
-class WordTestView(val word : Word,  context: Context?, val mode : Mode = Mode.WritingFirstTest) : LinearLayout(context) {
+class WordWritingTestView(val word : Word, context: Context?, val mode : Mode = Mode.WritingFirstTest) : LinearLayout(context) {
 
     private val firstWord : EditText = EditText(context)
     private val secondWord : EditText = EditText(context)

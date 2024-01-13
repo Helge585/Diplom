@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ScrollView
-import com.example.diplom_0_1.DictionaryUtils.Mode
+import com.example.diplom_0_1.test.TestUtils
+import com.example.diplom_0_1.test.TestUtils.Mode
+import com.example.diplom_0_1.MainActivity
+import com.example.diplom_0_1.R
+import com.example.diplom_0_1.test.WordChoosingTestView
+import com.example.diplom_0_1.test.WordWritingTestView
+import com.example.diplom_0_1.test.WordView
+import com.example.diplom_0_1.db.DictionaryDAO
+import com.example.diplom_0_1.db.WordDAO
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,10 +23,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [DictionaryEditingFragment.newInstance] factory method to
+ * Use the [DictionaryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DictionaryEditingFragment : Fragment() {
+class DictionaryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -39,10 +46,10 @@ class DictionaryEditingFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dictionary_editing, container, false)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linnn)
-        val dictName = DictionaryUtils.getCurrentDictionaryName()
+        val dictName = TestUtils.getCurrentDictionaryName()
         val dictId = DictionaryDAO.getDictionaryByName(dictName).id
         val words = WordDAO.getAllWordsByDictionaryId(dictId)
-        val mode = DictionaryUtils.getCurrentMode()
+        val mode = TestUtils.getCurrentMode()
         val secondWords = mutableListOf<String>()
         words.forEach { secondWords.add(it.secondWord) }
         when (mode) {
@@ -50,10 +57,10 @@ class DictionaryEditingFragment : Fragment() {
                 words.forEach { linearLayout.addView(WordView(it, context)) }
             }
             Mode.WritingFirstTest -> {
-                words.forEach { linearLayout.addView(WordTestView(it, context)) }
+                words.forEach { linearLayout.addView(WordWritingTestView(it, context)) }
             }
             Mode.WritingSecondTest -> {
-                words.forEach { linearLayout.addView(WordTestView(it, context, Mode.WritingSecondTest)) }
+                words.forEach { linearLayout.addView(WordWritingTestView(it, context, Mode.WritingSecondTest)) }
             }
             Mode.ChoosingTest -> {
                 words.forEach {
@@ -94,7 +101,7 @@ class DictionaryEditingFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            DictionaryEditingFragment().apply {
+            DictionaryFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

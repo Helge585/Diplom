@@ -1,21 +1,22 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.dialogfragments
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import com.example.diplom_0_1.test.TestUtils
+import com.example.diplom_0_1.R
 
-class TestChoosingFragmentDialog : DialogFragment() {
+class ChooseTestDialogFragment : DialogFragment() {
 
-    private var testsModes = listOf<DictionaryUtils.TestMode>()
+    private var testsModes = listOf<TestUtils.TestMode>()
     private var dictName = "Default"
     private var checkedItemIndex = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        testsModes = DictionaryUtils.getTestModesList()
+        testsModes = TestUtils.getTestModesList()
         dictName = arguments?.getString("dictName") ?: "Default"
         val testsNames = mutableListOf<String>()
         testsModes.forEach { testsNames.add(it.name) }
@@ -28,8 +29,8 @@ class TestChoosingFragmentDialog : DialogFragment() {
                     checkedItemIndex = item
                 }
                 .setPositiveButton("Выбрать") { dialog, id ->
-                    DictionaryUtils.setCurrentMode(testsModes[checkedItemIndex].mode)
-                    DictionaryUtils.setCurrentDictionaryName(testsModes[checkedItemIndex].name)
+                    TestUtils.setCurrentMode(testsModes[checkedItemIndex].mode)
+                    TestUtils.setCurrentDictionaryName(testsModes[checkedItemIndex].name)
                     findNavController().navigate(R.id.action_dictionariesFragment_to_dictionaryEditingFragment)
                 }
                 .setNegativeButton("Отменить") { dialog, id ->

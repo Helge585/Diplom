@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.diplom_0_1.SettingsFragment"
+        android:name="com.example.diplom_0_1.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/booksFragment"
-        android:name="com.example.diplom_0_1.BooksFragment"
+        android:name="com.example.diplom_0_1.fragments.BooksFragment"
         android:label="fragment_books"
         tools:layout="@layout/fragment_books" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/dictionariesFragment"
-        android:name="com.example.diplom_0_1.DictionariesFragment"
+        android:name="com.example.diplom_0_1.fragments.DictionariesFragment"
         android:label="fragment_dictionaries"
         tools:layout="@layout/fragment_dictionaries" >
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/readingFragment"
-        android:name="com.example.diplom_0_1.ReadingFragment"
+        android:name="com.example.diplom_0_1.fragments.ReadingFragment"
         android:label="fragment_reading"
         tools:layout="@layout/fragment_reading" >
         <argument
@@ -40,12 +40,12 @@
     </fragment>
     <fragment
         android:id="@+id/translatingFragment"
-        android:name="com.example.diplom_0_1.TranslatingFragment"
+        android:name="com.example.diplom_0_1.fragments.TranslatingFragment"
         android:label="fragment_translating"
         tools:layout="@layout/fragment_translating" />
     <fragment
         android:id="@+id/dictionaryEditingFragment"
-        android:name="com.example.diplom_0_1.DictionaryEditingFragment"
+        android:name="com.example.diplom_0_1.fragments.DictionaryFragment"
         android:label="fragment_dictionary_editing"
         tools:layout="@layout/fragment_dictionary_editing" />
 

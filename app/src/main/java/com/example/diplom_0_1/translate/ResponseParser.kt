@@ -1,7 +1,6 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.translate
 
 import org.xml.sax.helpers.DefaultHandler
-import java.util.jar.Attributes
 
 class ResponseParser() : DefaultHandler() {
 

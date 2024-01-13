@@ -2,26 +2,32 @@ package com.example.diplom_0_1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.example.diplom_0_1.db.DBManager
+import com.example.diplom_0_1.db.DBUtils
+import com.example.diplom_0_1.db.DictionaryDAO
+import com.example.diplom_0_1.dialogfragments.ChooseDictionaryDialogFragment
+import com.example.diplom_0_1.dialogfragments.ChooseTestDialogFragment
+import com.example.diplom_0_1.dialogfragments.ChooseWordDialogFragment
+import com.example.diplom_0_1.fragments.DictionariesFragment
+import com.example.diplom_0_1.fragments.DictionaryFragment
+import com.example.diplom_0_1.fragments.ReadingFragment
+import com.example.diplom_0_1.fragments.TranslatingFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private var currentDictionaryName = ""
-    private val translator: Translator = Translator()
     public lateinit var dbManager: DBManager
-    private val chooseWordFragment = ChooseWordFragment()
-    private val dictionariesChoosenFragmentDialog = DictionaryChoosenFragmentDialog()
-    private val testChoosingFragmentDialog = TestChoosingFragmentDialog()
+    private val chooseWordDialogFragment = ChooseWordDialogFragment()
+    private val dictionariesChoosenFragmentDialog = ChooseDictionaryDialogFragment()
+    private val chooseTestDialogFragment = ChooseTestDialogFragment()
     private var rF : ReadingFragment? = null
     private var dF : DictionariesFragment? = null
-    private var dictionaryEditingFragment : DictionaryEditingFragment? = null
+    private var dictionaryFragment : DictionaryFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +68,8 @@ class MainActivity : AppCompatActivity() {
     fun hideFragmentDialog() {
         rF?.let { it.setSuppressLayoutFlag(false) }
     }
-    fun setOnDictionaryEditingFragment(_deF : DictionaryEditingFragment) {
-        dictionaryEditingFragment = _deF
+    fun setOnDictionaryEditingFragment(_deF : DictionaryFragment) {
+        dictionaryFragment = _deF
     }
     fun setOnReadingFragment(_rF : ReadingFragment) {
         rF = _rF
@@ -77,8 +83,8 @@ class MainActivity : AppCompatActivity() {
 
         args.putStringArray("translatings", translatings.toTypedArray())
         args.putString("word", word)
-        chooseWordFragment.arguments = args
-        chooseWordFragment.show(supportFragmentManager, "words")
+        chooseWordDialogFragment.arguments = args
+        chooseWordDialogFragment.show(supportFragmentManager, "words")
         //rF?.let { it.setSuppressLayoutFlag(false) }
     }
     fun OnRecievedTranslatedWordFromReadingFragment(word : String) {
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity() {
     fun showTestChoosingFragmentDialog(dictName : String) {
         val args = Bundle()
         args.putString("dictName", dictName)
-        testChoosingFragmentDialog.arguments = args
-        testChoosingFragmentDialog.show(supportFragmentManager, "tests")
+        chooseTestDialogFragment.arguments = args
+        chooseTestDialogFragment.show(supportFragmentManager, "tests")
     }
 }

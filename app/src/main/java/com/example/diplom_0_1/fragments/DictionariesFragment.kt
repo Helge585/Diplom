@@ -1,25 +1,27 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.navigation.findNavController
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.example.diplom_0_1.dictionary.Dictionary
+import com.example.diplom_0_1.dictionary.DictionaryAnnotationView
+import com.example.diplom_0_1.test.TestUtils
+import com.example.diplom_0_1.MainActivity
+import com.example.diplom_0_1.R
 
 /**
  * A simple [Fragment] subclass.
  * Use the [DictionariesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
 class DictionariesFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -53,7 +55,7 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
             dicts.add(dict)
             val dw = DictionaryAnnotationView(id, name, context)
             dw.getOpenButton().setOnClickListener {
-                openDictionary(dw.name, DictionaryUtils.Mode.Edit)
+                openDictionary(dw.name, TestUtils.Mode.Edit)
             }
             dw.getTestButton().setOnClickListener {
                 //openDictionary(dw.name, DictionaryUtils.Mode.WritingFirstTest)
@@ -68,9 +70,9 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
         return view
     }
 
-    fun openDictionary(dictName : String, mode : DictionaryUtils.Mode) {
-        DictionaryUtils.setCurrentDictionaryName(dictName)
-        DictionaryUtils.setCurrentMode(mode)
+    fun openDictionary(dictName : String, mode : TestUtils.Mode) {
+        TestUtils.setCurrentDictionaryName(dictName)
+        TestUtils.setCurrentMode(mode)
         findNavController().navigate(R.id.action_dictionariesFragment_to_dictionaryEditingFragment)
     }
     fun getDictionariesNames() : List<String> {

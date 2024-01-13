@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.book
 
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
@@ -27,7 +27,7 @@ class FB2Parser() : DefaultHandler() {
     private var inBody = false
     private var inParagraph = false
 
-    public fun getBookAnnotation() : BookAnnotation{
+    public fun getBookAnnotation() : BookAnnotation {
         val authorName = authorName.toString().replace("\\s+".toRegex(), " ").trim()
         val bookName = bookName.toString().replace("\\s+".toRegex(), " ").trim()
         return BookAnnotation(bookName, authorName, null)

@@ -1,15 +1,12 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.dialogfragments
 
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.example.diplom_0_1.MainActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,10 +15,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ChooseWordFragment.newInstance] factory method to
+ * Use the [ChooseWordDialogFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChooseWordFragment : DialogFragment() {
+class ChooseWordDialogFragment : DialogFragment() {
     private lateinit var translatings : Array<String>
     private lateinit var word : String
     private var checkedItemIndex = 0

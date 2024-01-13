@@ -1,12 +1,13 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.dialogfragments
 
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.example.diplom_0_1.db.WordDAO
 
-class DictionaryChoosenFragmentDialog : DialogFragment() {
+class ChooseDictionaryDialogFragment : DialogFragment() {
 
     private var firstWord = ""
     private var secondWord = ""

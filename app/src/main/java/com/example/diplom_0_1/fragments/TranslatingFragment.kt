@@ -1,4 +1,4 @@
-package com.example.diplom_0_1
+package com.example.diplom_0_1.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.diplom_0_1.MainActivity
+import com.example.diplom_0_1.R
+import com.example.diplom_0_1.translate.ResponseParser
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
