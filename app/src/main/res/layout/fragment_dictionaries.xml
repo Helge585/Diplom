@@ -5,9 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".fragments.DictionariesFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutDicts"
+    <ScrollView
+        android:id="@+id/scrollViewEditing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDicts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabDict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/alert_dark_frame" />
+
 </FrameLayout>

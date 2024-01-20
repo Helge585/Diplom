@@ -29,8 +29,8 @@ class ChooseTestDialogFragment : DialogFragment() {
                     checkedItemIndex = item
                 }
                 .setPositiveButton("Выбрать") { dialog, id ->
-                    TestUtils.setCurrentMode(testsModes[checkedItemIndex].mode)
-                    TestUtils.setCurrentDictionaryName(testsModes[checkedItemIndex].name)
+                    TestUtils.currentMode = testsModes[checkedItemIndex].mode
+                    TestUtils.currentDictionaryName = testsModes[checkedItemIndex].name
                     findNavController().navigate(R.id.action_dictionariesFragment_to_dictionaryEditingFragment)
                 }
                 .setNegativeButton("Отменить") { dialog, id ->

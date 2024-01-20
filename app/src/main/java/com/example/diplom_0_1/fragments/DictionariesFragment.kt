@@ -13,6 +13,10 @@ import com.example.diplom_0_1.dictionary.DictionaryAnnotationView
 import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.R
+import com.example.diplom_0_1.db.DictionaryDAO
+import com.example.diplom_0_1.db.WordDAO
+import com.example.diplom_0_1.dialogfragments.ChooseTestSettingsDialogFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * A simple [Fragment] subclass.
@@ -41,38 +45,44 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dictionaries, container, false)
 
         linearLayout = view.findViewById(R.id.linearLayoutDicts)
 
-        val db = (activity as MainActivity).dbManager.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM Dictionaries", null)
-        while (cursor.moveToNext()) {
-            val id = cursor.getInt(0)
-            val name = cursor.getString(1)
-            val dict = Dictionary(id, name)
-            dicts.add(dict)
-            val dw = DictionaryAnnotationView(id, name, context)
+        DictionaryDAO.getAllDictionaries().forEach {
+            Log.i("Dictionary", it.toString())
+            dicts.add(it)
+            val dw = DictionaryAnnotationView(id, it, context)
             dw.getOpenButton().setOnClickListener {
-                openDictionary(dw.name, TestUtils.Mode.Edit)
+                openDictionary(dw.dictionary, TestUtils.Mode.Edit)
             }
             dw.getTestButton().setOnClickListener {
-                //openDictionary(dw.name, DictionaryUtils.Mode.WritingFirstTest)
-                (activity as MainActivity).showTestChoosingFragmentDialog(dw.name)
+                TestUtils.currentDictionaryId = dw.dictionary.id
+                (activity as MainActivity).showTestChoosingFragmentDialog(dw.dictionary)
+            }
+            dw.getInfoButton().setOnClickListener {
+                val w = WordDAO.getAllWords()
+                for (word in w) {
+                    Log.i("Dictionaries fragment, Info", word.toString())
+                }
+                (activity as MainActivity).showDictionaryInformationDialogFragment(dw.dictionary.getBundleInfo())
+
             }
             linearLayout.addView(dw)
-        }
-        cursor.close()
-        db.close()
 
+        }
+
+        val fab = view.findViewById<FloatingActionButton>(R.id.fabDict)
+        fab.setOnClickListener {
+            (activity as MainActivity).showCreateDictionaryDialogFragment()
+        }
         (activity as MainActivity).setOnDictionariesFragment(this)
         return view
     }
 
-    fun openDictionary(dictName : String, mode : TestUtils.Mode) {
-        TestUtils.setCurrentDictionaryName(dictName)
-        TestUtils.setCurrentMode(mode)
+    fun openDictionary(dict : Dictionary, mode : TestUtils.Mode) {
+        TestUtils.currentDictionaryId = dict.id
+        TestUtils.currentMode = mode
         findNavController().navigate(R.id.action_dictionariesFragment_to_dictionaryEditingFragment)
     }
     fun getDictionariesNames() : List<String> {
@@ -81,6 +91,7 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
         dicts.forEach { names.add(it.name) }
         return names
     }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

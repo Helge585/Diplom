@@ -2,6 +2,7 @@ package com.example.diplom_0_1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -10,11 +11,16 @@ import com.example.diplom_0_1.db.DBUtils
 import com.example.diplom_0_1.db.DictionaryDAO
 import com.example.diplom_0_1.dialogfragments.ChooseDictionaryDialogFragment
 import com.example.diplom_0_1.dialogfragments.ChooseTestDialogFragment
+import com.example.diplom_0_1.dialogfragments.ChooseTestSettingsDialogFragment
 import com.example.diplom_0_1.dialogfragments.ChooseWordDialogFragment
+import com.example.diplom_0_1.dialogfragments.CreateDictionaryDialogFragment
+import com.example.diplom_0_1.dialogfragments.ShowDictionaryInformationDialogFragment
+import com.example.diplom_0_1.dictionary.Dictionary
 import com.example.diplom_0_1.fragments.DictionariesFragment
 import com.example.diplom_0_1.fragments.DictionaryFragment
 import com.example.diplom_0_1.fragments.ReadingFragment
 import com.example.diplom_0_1.fragments.TranslatingFragment
+import com.example.diplom_0_1.test.TestUtils
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -22,12 +28,19 @@ class MainActivity : AppCompatActivity() {
 
     private var currentDictionaryName = ""
     public lateinit var dbManager: DBManager
+
     private val chooseWordDialogFragment = ChooseWordDialogFragment()
     private val dictionariesChoosenFragmentDialog = ChooseDictionaryDialogFragment()
+    private val testSettingsDialogFragment = ChooseTestSettingsDialogFragment()
     private val chooseTestDialogFragment = ChooseTestDialogFragment()
+    private val showDictionaryInformationDialogFragment = ShowDictionaryInformationDialogFragment()
+    private val createDictionaryDialogFragment = CreateDictionaryDialogFragment()
+
     private var rF : ReadingFragment? = null
     private var dF : DictionariesFragment? = null
     private var dictionaryFragment : DictionaryFragment? = null
+
+    lateinit var bottomNavView : BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +61,9 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = builder.build()
         toolbar.setupWithNavController(navController, appBarConfiguration)
 
-        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavView.setupWithNavController(navController)
+
         //bottomNavView.visibility = View.INVISIBLE
 
 //        val tF = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
@@ -106,10 +120,31 @@ class MainActivity : AppCompatActivity() {
         dictionariesChoosenFragmentDialog.show(supportFragmentManager, "dicts")
     }
 
-    fun showTestChoosingFragmentDialog(dictName : String) {
+    fun showTestChoosingFragmentDialog(dict : Dictionary) {
         val args = Bundle()
-        args.putString("dictName", dictName)
+        args.putString("dictName", dict.name)
         chooseTestDialogFragment.arguments = args
         chooseTestDialogFragment.show(supportFragmentManager, "tests")
+    }
+
+    fun showTestSettingsDialogFragment(allWordsCount : Int, newWordsCount : Int, wrongGuessWordsCount : Int) {
+        val args = Bundle()
+        args.putInt("allWordsCount", allWordsCount)
+        args.putInt("newWordsCount", newWordsCount)
+        args.putInt("wrongGuessWordsCount", wrongGuessWordsCount)
+        testSettingsDialogFragment.arguments = args
+        testSettingsDialogFragment.show(supportFragmentManager, "testSettings")
+    }
+
+    fun showCreateDictionaryDialogFragment() {
+        createDictionaryDialogFragment.show(supportFragmentManager, "createDict")
+    }
+    fun showDictionaryInformationDialogFragment(args : Bundle) {
+        showDictionaryInformationDialogFragment.arguments = args
+        showDictionaryInformationDialogFragment.show(supportFragmentManager, "dictInfo")
+    }
+    fun updateDictionaryFragment(testsWordsType: TestUtils.TestWordType,
+                                 testDirectionType: TestUtils.TestDirectionType, wordsCount: Int) {
+        dictionaryFragment?.updateTestsList(testsWordsType, testDirectionType, wordsCount)
     }
 }

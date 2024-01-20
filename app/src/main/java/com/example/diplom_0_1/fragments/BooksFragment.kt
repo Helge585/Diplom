@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -122,10 +123,11 @@ class BooksFragment : Fragment() {
         val db = (activity as MainActivity).dbManager.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM books", null)
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(0)
             val uri = Uri.parse(cursor.getString(1))
             val name = cursor.getString(2)
             val author = cursor.getString(3)
-            val bw = BookAnnotationView(BookAnnotation(name, author, uri), context)
+            val bw = BookAnnotationView(BookAnnotation(id, name, author, uri), context)
             bw.setOnClickListener {
                 view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
                 (it as BookAnnotationView).bookAnnotation.uri?.let {
@@ -137,6 +139,7 @@ class BooksFragment : Fragment() {
 
             }
             linearLayout.addView(bw)
+            Log.i("Book", bw.bookAnnotation.toString())
         }
         cursor.close()
         db.close()

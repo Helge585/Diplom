@@ -11,11 +11,13 @@ import android.widget.TextView
 import androidx.core.view.size
 
 
-class WordChoosingTestView(val word : Word, answers : List<String>, context: Context?) : LinearLayout(context) {
+class WordChoosingTestView(override val word : Word, answers : List<String>, context: Context?, val mode : TestUtils.Mode) : LinearLayout(context), TestCase {
 
     private val COLUMNS_COUNT = 3
     private val guessedButton = Button(context)
-    private val answersButtons = mutableListOf<TextView>()
+    private val answersButtons = mutableListOf<Button>()
+    private var isRight = false
+    private var isTried = false
 
     init {
         orientation = VERTICAL
@@ -24,7 +26,12 @@ class WordChoosingTestView(val word : Word, answers : List<String>, context: Con
         border.setStroke(3, -0x1000000)
 
         background = border
-        guessedButton.setText(word.firstWord)
+        if (mode == TestUtils.Mode.ChoosingSecondTest) {
+            guessedButton.setText(word.firstWord)
+        } else {
+            guessedButton.setText(word.secondWord)
+        }
+
         //guessedTextView.background = border
         guessedButton.setPadding(15, 15, 15, 15)
         guessedButton.textSize = 20F
@@ -35,10 +42,17 @@ class WordChoosingTestView(val word : Word, answers : List<String>, context: Con
         var i = 0
         var tableRow = TableRow(context)
         tableRow.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        answers.forEach {
+
+        var _answers = if (mode == TestUtils.Mode.ChoosingSecondTest) {
+            answers + word.secondWord
+        } else {
+            answers + word.firstWord
+        }
+        _answers = _answers.shuffled()
+        _answers.forEach {
             val tw = Button(context)
             tw.setOnClickListener {
-                checkAnswer(it as TextView)
+                checkAnswer(it as Button)
             }
             tw.setPadding(15, 15, 15, 15)
             //tw.background = border
@@ -68,15 +82,34 @@ class WordChoosingTestView(val word : Word, answers : List<String>, context: Con
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 
-    private fun checkAnswer(clickedTextView: TextView) {
-        if (clickedTextView.text.toString().lowercase() == word.secondWord.lowercase()) {
-            clickedTextView.setTextColor(Color.BLUE)
+    fun checkAnswer(button : Button) {
+        val isAnswerRight = if (mode == TestUtils.Mode.ChoosingSecondTest) {
+            button.text.toString().lowercase() == word.secondWord.lowercase()
+        } else {
+            button.text.toString().lowercase() == word.firstWord.lowercase()
+        }
+        if (isAnswerRight) {
+            isRight = true
+            button.setTextColor(Color.BLUE)
             guessedButton.setTextColor(Color.BLUE)
             guessedButton.isClickable = false
             answersButtons.forEach { it.isClickable = false }
         } else {
-            clickedTextView.setTextColor(Color.RED)
+            button.setTextColor(Color.RED)
             guessedButton.setTextColor(Color.RED)
         }
+        isTried = true
+    }
+
+    override fun isTried(): Boolean {
+        return isTried
+    }
+
+    override fun isRight(): Boolean {
+        return isRight
+    }
+
+    override fun getTestType(): TestUtils.Mode {
+        return mode
     }
 }

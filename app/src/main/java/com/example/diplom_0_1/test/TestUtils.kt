@@ -2,41 +2,54 @@ package com.example.diplom_0_1.test
 
 object TestUtils {
     enum class Mode {
-        Edit, WritingFirstTest, WritingSecondTest, ChoosingTest
+        Edit, WritingFirstTest, WritingSecondTest, ChoosingFirstTest, ChoosingSecondTest
+    }
+    enum class TestDirectionType {
+        Random, Begin, End
+    }
+    enum class TestWordType {
+        Any, New, Wrong
     }
     class TestMode(val name : String, val mode : Mode) {}
 
     @JvmStatic
     fun getTestModesList() : List<TestMode> {
         val result = mutableListOf<TestMode>()
-        result.add(TestMode("Ввод на родном языке", Mode.WritingFirstTest))
-        result.add(TestMode("Ввод на иностранном языке", Mode.WritingSecondTest))
-        result.add(TestMode("Выбрать слово", Mode.ChoosingTest))
+        result.add(TestMode("Ввод на иностранном языке", Mode.WritingFirstTest))
+        result.add(TestMode("Ввод на родном языке", Mode.WritingSecondTest))
+        result.add(TestMode("Выбрать слово на инностранном языке", Mode.ChoosingFirstTest))
+        result.add(TestMode("Выбрать слово на родном языке", Mode.ChoosingSecondTest))
         return result
     }
 
     @JvmStatic
-    private var currentDictionaryName = "Default"
-    @JvmStatic
-    private var currentMode = Mode.Edit
-
-    @JvmStatic
-    fun setCurrentDictionaryName(dictName : String) {
-        currentDictionaryName = dictName
+    fun getTestTypeUserInterfaceName(innerName : String) : String{
+        return when (innerName) {
+            "WritingFirstTest" -> {
+                "Ввод на иностранном языке"
+            }
+            "WritingSecondTest" -> {
+                "Ввод на родном языке"
+            }
+            "ChoosingFirstTest" -> {
+                "Выбрать слово на родном языке"
+            }
+            "ChoosingSecondTest" -> {
+                "Выбрать слово на инностранном языке"
+            }
+            else -> {
+                "Nema"
+            }
+        }
     }
 
     @JvmStatic
-    fun getCurrentDictionaryName() : String {
-        return currentDictionaryName
-    }
+    var currentDictionaryName = "Default"
 
     @JvmStatic
-    fun setCurrentMode(mode : Mode) {
-        currentMode = mode
-    }
+    var currentMode = Mode.Edit
 
     @JvmStatic
-    fun getCurrentMode() : Mode {
-        return currentMode
-    }
+    var currentDictionaryId = 1
+
 }

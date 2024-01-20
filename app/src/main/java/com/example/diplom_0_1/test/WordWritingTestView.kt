@@ -10,10 +10,13 @@ import com.example.diplom_0_1.R
 import com.example.diplom_0_1.test.TestUtils.Mode
 
 
-class WordWritingTestView(val word : Word, context: Context?, val mode : Mode = Mode.WritingFirstTest) : LinearLayout(context) {
+class WordWritingTestView(override val word : Word, context: Context?, val mode : Mode = Mode.WritingFirstTest) : LinearLayout(context), TestCase {
 
     private val firstWord : EditText = EditText(context)
     private val secondWord : EditText = EditText(context)
+
+    private var isRight = false
+    private var isTried = false
 
     init {
         orientation = VERTICAL
@@ -71,16 +74,33 @@ class WordWritingTestView(val word : Word, context: Context?, val mode : Mode = 
         if (mode == Mode.WritingFirstTest) {
             if (word.firstWord.lowercase() == firstWord.text.toString().lowercase()) {
                 firstWord.setTextColor(Color.BLUE)
+                isRight = true
+                secondWord.isEnabled = false
+                firstWord.isEnabled = false
             } else {
                 firstWord.setTextColor(Color.RED)
             }
         } else if (mode == Mode.WritingSecondTest) {
             if (word.secondWord.lowercase() == secondWord.text.toString().lowercase()) {
                 secondWord.setTextColor(Color.BLUE)
+                secondWord.isEnabled = false
+                firstWord.isEnabled = false
+                isRight = true
             } else {
                 secondWord.setTextColor(Color.RED)
             }
         }
+        isTried = true
+    }
 
+    override fun isTried(): Boolean {
+        return isTried
+    }
+
+    override fun isRight(): Boolean {
+        return isRight
+    }
+    override fun getTestType(): Mode {
+        return  mode
     }
 }

@@ -1,11 +1,37 @@
 package com.example.diplom_0_1.db
 
 import android.content.ContentValues
+import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.test.Word
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-//TABLE Words(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER, first TEXT, second TEXT)
+//"CREATE TABLE Words(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER, first TEXT, " +
+//                "second TEXT, isGuessed INTEGER, guessedRank INTEGER)")
 
 object WordDAO {
+    @JvmStatic
+    fun deleteWordById(wordId : Int) {
+        val db = DBUtils.getDataBase().writableDatabase
+        db.delete("Words", "id = ?", arrayOf(wordId.toString()))
+        db.close()
+    }
+    @JvmStatic
+    fun updateWordFirstSecond(wordId : Int, newFirst : String?, newSecond : String?) {
+        val db = DBUtils.getDataBase().writableDatabase
+        val values = ContentValues()
+        if (newFirst != null) {
+            values.put("first", newFirst)
+        }
+        if (newSecond != null) {
+            values.put("second", newSecond)
+        }
+        val result = db.update("Words", values, "id = ?",
+            arrayOf(wordId.toString()))
+        db.close()
+    }
     @JvmStatic fun getAllWords() : List<Word> {
         val words = mutableListOf<Word>()
         val db = DBUtils.getDataBase().readableDatabase
@@ -15,7 +41,9 @@ object WordDAO {
             val dictId = cursor.getInt(1)
             val firstWord = cursor.getString(2)
             val secondWord = cursor.getString(3)
-            val word = Word(id, dictId, firstWord, secondWord)
+            val isGueseed = cursor.getInt(4)
+            val guessedRank = cursor.getInt(5)
+            val word = Word(id, dictId, firstWord, secondWord, isGueseed, guessedRank)
             words.add(word)
         }
         cursor.close()
@@ -32,7 +60,9 @@ object WordDAO {
             val dictId = cursor.getInt(1)
             val firstWord = cursor.getString(2)
             val secondWord = cursor.getString(3)
-            val word = Word(id, dictId, firstWord, secondWord)
+            val isGuessed = cursor.getInt(4)
+            val guessedRank = cursor.getInt(5)
+            val word = Word(id, dictId, firstWord, secondWord, isGuessed, guessedRank)
             words.add(word)
         }
         cursor.close()
@@ -42,12 +72,14 @@ object WordDAO {
 
     @JvmStatic
     fun saveWordByDictName(dictName : String, firstWord : String, secondWord : String) {
-        val dictId = DictionaryDAO.getDictionaryByName(dictName).id
+        val dictId = DictionaryDAO.getDictionaryIdByName(dictName)
         val db = DBUtils.getDataBase().writableDatabase
         val cv = ContentValues()
         cv.put("dictId", dictId)
         cv.put("first", firstWord)
         cv.put("second", secondWord)
+        cv.put("isGuessed", 0)
+        cv.put("guessedRank", 0)
         db.insert("Words", null, cv)
         db.close()
     }
@@ -60,6 +92,26 @@ object WordDAO {
         cv.put("first", firstWord)
         cv.put("second", secondWord)
         db.insert("Words", null, cv)
+        db.close()
+    }
+
+    @JvmStatic
+    fun updateWordGuessedAndRankStatus(isRight : Boolean, wordId : Int, wordRank : Int) {
+        val db = DBUtils.getDataBase().writableDatabase
+        val values = ContentValues()
+        values.put("isGuessed", 1)
+        if (isRight) {
+            values.put("guessedRank", wordRank + 1)
+        } else {
+            values.put("guessedRank", wordRank - 1)
+        }
+        val result = db.update("Words", values, "id = ?", arrayOf(wordId.toString()))
+        db.close()
+    }
+
+    fun deleteWordsByDictionaryId(dictId: Int) {
+        val db = DBUtils.getDataBase().writableDatabase
+        db.delete("Words", "dictId = ?", arrayOf(dictId.toString()))
         db.close()
     }
 }

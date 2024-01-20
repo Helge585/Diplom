@@ -30,7 +30,7 @@ class FB2Parser() : DefaultHandler() {
     public fun getBookAnnotation() : BookAnnotation {
         val authorName = authorName.toString().replace("\\s+".toRegex(), " ").trim()
         val bookName = bookName.toString().replace("\\s+".toRegex(), " ").trim()
-        return BookAnnotation(bookName, authorName, null)
+        return BookAnnotation(-1, bookName, authorName, null)
     }
 
     public fun getBookBodyParagraphes() : List<String> {
