@@ -1,6 +1,9 @@
 package com.example.diplom_0_1.book
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +18,15 @@ class BookReadingFragmentRecyclerAdapter(private val pages: List<String>, privat
         val textEdit: BookParagraphView = itemView.findViewById(R.id.textViewRecycler)
         init {
             textEdit.setOnFragment(fragment)
+            //textEdit.setOnTouchListener(this)
+
         }
+//        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+//            (p0 as BookParagraphView).fragment.pagesCountView.setText("Страница: ${adapterPosition + 1} / ${itemCount + 1}")
+//            BookReader.updatePage(adapterPosition)
+//            //Log.i("BookReadingFragmentRecyclerAdapter", "page = $adapterPosition")
+//            return false
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

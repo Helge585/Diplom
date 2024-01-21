@@ -94,7 +94,7 @@ class BooksFragment : Fragment() {
                 val uri: Uri? = result.data?.data
                 if(uri != null){
                     activity?.contentResolver?.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    BookReader.setCurrentBook(uri, context)
+                    BookReader.setCurrentBook(uri, 0, context)
                     val bookAnnotation = BookReader.getBookAnnotation()
                     if (bookAnnotation != null) {
                         println("A: " + bookAnnotation.authorName + ", B: " + bookAnnotation.bookName)
@@ -109,6 +109,7 @@ class BooksFragment : Fragment() {
                         cv.put("uri", uri.toString())
                         cv.put("name", bookAnnotation.bookName)
                         cv.put("author", bookAnnotation.authorName)
+                        cv.put("page", 0)
                         db.insert("Books", null, cv)
                         db.close()
                     }
@@ -127,15 +128,19 @@ class BooksFragment : Fragment() {
             val uri = Uri.parse(cursor.getString(1))
             val name = cursor.getString(2)
             val author = cursor.getString(3)
-            val bw = BookAnnotationView(BookAnnotation(id, name, author, uri), context)
+            val page = cursor.getInt(4)
+            val bw = BookAnnotationView(BookAnnotation(id, name, author, uri, page), context)
             bw.setOnClickListener {
                 view.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
-                (it as BookAnnotationView).bookAnnotation.uri?.let {
-                    BookReader.setCurrentBook(
-                        it,
-                        context
-                    )
+                (it as BookAnnotationView).bookAnnotation.let {
+                    BookReader.setCurrentBook(it.uri!!, it.page, context, it.bookId)
                 }
+//                (it as BookAnnotationView).bookAnnotation.uri?.let {
+//                    BookReader.setCurrentBook(
+//                        it,
+//                        context
+//                    )
+//                }
 
             }
             linearLayout.addView(bw)

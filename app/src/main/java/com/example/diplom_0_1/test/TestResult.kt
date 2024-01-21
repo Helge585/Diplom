@@ -10,6 +10,6 @@ class TestResult (val id : Int, val dictId : Int, val testType : String, val las
 
     fun getInfo() : String {
         val name = TestUtils.getTestTypeUserInterfaceName(testType)
-        return "testType: $testType, name: $name, lastResult: $lastResult, averageResult: $averageResult, lastDate: $lastDate"
+        return "\nТип теста: $name\nПоследний результат: ${lastResult * 100}%\nСредний результат: ${averageResult * 100}\nПоследний раз: $lastDate"
     }
 }

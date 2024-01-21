@@ -2,7 +2,6 @@ package com.example.diplom_0_1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -12,7 +11,6 @@ import com.example.diplom_0_1.db.DictionaryDAO
 import com.example.diplom_0_1.dialogfragments.ChooseDictionaryDialogFragment
 import com.example.diplom_0_1.dialogfragments.ChooseTestDialogFragment
 import com.example.diplom_0_1.dialogfragments.ChooseTestSettingsDialogFragment
-import com.example.diplom_0_1.dialogfragments.ChooseWordDialogFragment
 import com.example.diplom_0_1.dialogfragments.CreateDictionaryDialogFragment
 import com.example.diplom_0_1.dialogfragments.ShowDictionaryInformationDialogFragment
 import com.example.diplom_0_1.dictionary.Dictionary
@@ -29,21 +27,25 @@ class MainActivity : AppCompatActivity() {
     private var currentDictionaryName = ""
     public lateinit var dbManager: DBManager
 
-    private val chooseWordDialogFragment = ChooseWordDialogFragment()
+   // private val chooseWordDialogFragment = ChooseWordDialogFragment()
     private val dictionariesChoosenFragmentDialog = ChooseDictionaryDialogFragment()
     private val testSettingsDialogFragment = ChooseTestSettingsDialogFragment()
     private val chooseTestDialogFragment = ChooseTestDialogFragment()
-    private val showDictionaryInformationDialogFragment = ShowDictionaryInformationDialogFragment()
+    //private val showDictionaryInformationDialogFragment = ShowDictionaryInformationDialogFragment()
     private val createDictionaryDialogFragment = CreateDictionaryDialogFragment()
 
     private var rF : ReadingFragment? = null
     private var dF : DictionariesFragment? = null
     private var dictionaryFragment : DictionaryFragment? = null
+    var translatingFragment : TranslatingFragment? = null
 
     lateinit var bottomNavView : BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (TestUtils.themeMode == 1) {
+            setTheme(R.style.MyTheme)
+        }
         setContentView(R.layout.activity_main)
 
         dbManager = DBManager(applicationContext)
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavView.setupWithNavController(navController)
 
+        translatingFragment = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
         //bottomNavView.visibility = View.INVISIBLE
 
 //        val tF = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
@@ -91,26 +94,30 @@ class MainActivity : AppCompatActivity() {
     fun setOnDictionariesFragment(_dF : DictionariesFragment) {
         dF = _dF
     }
-    fun showChooseWordFragment(word : String, translatings : List<String>) {
-        rF?.let { it.setSuppressLayoutFlag(true) }
-        val args = Bundle()
-
-        args.putStringArray("translatings", translatings.toTypedArray())
-        args.putString("word", word)
-        chooseWordDialogFragment.arguments = args
-        chooseWordDialogFragment.show(supportFragmentManager, "words")
-        //rF?.let { it.setSuppressLayoutFlag(false) }
+//    fun showChooseWordFragment(word: String, translatings: List<Translating>) {
+//        rF?.let { it.setSuppressLayoutFlag(true) }
+//        val args = Bundle()
+//
+//        args.putStringArray("translatings", translatings.toTypedArray())
+//        args.putString("word", word)
+//        chooseWordDialogFragment.arguments = args
+//        chooseWordDialogFragment.show(supportFragmentManager, "words")
+//        //rF?.let { it.setSuppressLayoutFlag(false) }
+//    }
+    fun OnRecievedTranslatedWordFromReadingFragment(word: String, sentence: String) {
+//        val tF = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
+        translatingFragment?.OnRecievedTranslatedWordFromMainActivity(word, sentence)
     }
-    fun OnRecievedTranslatedWordFromReadingFragment(word : String) {
-        val tF = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
-        tF.OnRecievedTranslatedWordFromMainActivity(word)
-    }
 
-    fun showDictionariesChoosenDialogFragment(firstWord : String, secondWord : String) {
+    fun showDictionariesChoosenDialogFragment(
+        firstWord: String,
+        secondWord: String,
+        checkedSentence: String
+    ) {
         val args = Bundle()
         args.putString("firstWord", firstWord)
         args.putString("secondWord", secondWord)
-
+        args.putString("example", checkedSentence)
         val dicts = DictionaryDAO.getAllDictionaries()
         val names = mutableListOf<String>()
         dicts.forEach { names.add(it.name) }
@@ -139,10 +146,10 @@ class MainActivity : AppCompatActivity() {
     fun showCreateDictionaryDialogFragment() {
         createDictionaryDialogFragment.show(supportFragmentManager, "createDict")
     }
-    fun showDictionaryInformationDialogFragment(args : Bundle) {
-        showDictionaryInformationDialogFragment.arguments = args
-        showDictionaryInformationDialogFragment.show(supportFragmentManager, "dictInfo")
-    }
+//    fun showDictionaryInformationDialogFragment(args : Bundle) {
+//        showDictionaryInformationDialogFragment.arguments = args
+//        showDictionaryInformationDialogFragment.show(supportFragmentManager, "dictInfo")
+//    }
     fun updateDictionaryFragment(testsWordsType: TestUtils.TestWordType,
                                  testDirectionType: TestUtils.TestDirectionType, wordsCount: Int) {
         dictionaryFragment?.updateTestsList(testsWordsType, testDirectionType, wordsCount)

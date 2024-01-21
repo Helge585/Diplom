@@ -2,6 +2,8 @@ package com.example.diplom_0_1.book
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import com.example.diplom_0_1.db.BookDAO
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import javax.xml.parsers.SAXParserFactory
@@ -15,8 +17,11 @@ object BookReader {
     @JvmStatic
     private  var bookBody: String? = null
     @JvmStatic
-    private  var bookBodyParagraphes : List<String>? = null
-
+    private  var bookBodyPages : List<String>? = null
+    @JvmStatic
+    private var page = 0
+    @JvmStatic
+    private var bookId = -1
 
     @JvmStatic
     fun getBookBody() : String? {
@@ -24,9 +29,12 @@ object BookReader {
     }
 
     @JvmStatic
-    fun getBookBodyParagraphesList() : List<String> {
-        return bookBodyParagraphes ?: listOf("Nema")
+    fun getBookBodyPagesList() : List<String> {
+        return bookBodyPages ?: listOf("Nema")
     }
+
+    @JvmStatic
+    fun getPage() = page
 
     @JvmStatic
     fun getBookAnnotation() : BookAnnotation? {
@@ -34,12 +42,19 @@ object BookReader {
     }
 
     @JvmStatic
-    fun setCurrentBook(_uri: Uri, context: Context?) {
+    fun setCurrentBook(_uri : Uri, _page : Int, context: Context?, _bookId : Int = -1) {
         uri = _uri
-        parseBook(_uri, context)
-        bookBody = parsePlainTextByURI(_uri, context)
+        parseBook(uri!!, context)
+        bookBody = parsePlainTextByURI(uri!!, context)
+        page = _page
+        bookId = _bookId
     }
-
+    @JvmStatic
+    fun updatePage(_page : Int) {
+        page = _page
+        Log.i("BookReader", "page = $page")
+        BookDAO.updatePage(bookId, page)
+    }
     @JvmStatic
     private fun parseBook(uri: Uri, context: Context?) {
         val result = StringBuilder("")
@@ -52,7 +67,7 @@ object BookReader {
         }
         bookAnnotation = fB2Parser.getBookAnnotation()
         bookAnnotation?.uri = uri
-        bookBodyParagraphes = fB2Parser.getBookBodyParagraphes()
+        bookBodyPages = fB2Parser.getBookBodyParagraphes()
     }
 
     @JvmStatic

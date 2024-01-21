@@ -11,6 +11,7 @@ class ChooseDictionaryDialogFragment : DialogFragment() {
 
     private var firstWord = ""
     private var secondWord = ""
+    private var example = ""
     private lateinit var dicts : Array<String>
     private var checkedItemIndex = 0
 
@@ -18,6 +19,7 @@ class ChooseDictionaryDialogFragment : DialogFragment() {
 
         firstWord = arguments?.getString("firstWord") ?: ""
         secondWord = arguments?.getString("secondWord") ?: ""
+        example = arguments?.getString("example") ?: ""
         checkedItemIndex = 0
         dicts = arguments?.getStringArray("dicts") as Array<String>
 
@@ -34,7 +36,7 @@ class ChooseDictionaryDialogFragment : DialogFragment() {
                     "Сохранить"
                 ) { dialog, id ->
                     Log.i("DictionariesChoosenFragmentDialog", "Choosen item: " + dicts[checkedItemIndex])
-                    WordDAO.saveWordByDictName(dicts[checkedItemIndex], firstWord, secondWord)
+                    WordDAO.saveWordByDictName(dicts[checkedItemIndex], firstWord, secondWord, example)
                 }
                 .setNegativeButton("Назад") { dialog, id ->
                 }

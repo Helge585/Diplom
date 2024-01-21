@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.diplom_0_1.R
+import com.example.diplom_0_1.test.TestUtils
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,10 +45,17 @@ class SettingsFragment : Fragment(), View.OnTouchListener {
         // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
-        editText = view.findViewById<EditText>(R.id.settingsTextEdit)
-        editText.setTextIsSelectable(false)
-        //editText.setOnTouchListener(this)
 
+        val but1 = view.findViewById<Button>(R.id.buttonSettings1)
+        but1.setOnClickListener {
+            TestUtils.themeMode = 0
+            activity?.recreate()
+        }
+        val but2 = view.findViewById<Button>(R.id.buttonSettings2)
+        but2.setOnClickListener {
+            TestUtils.themeMode = 1
+            activity?.recreate()
+        }
         return view
     }
 

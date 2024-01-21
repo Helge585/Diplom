@@ -5,13 +5,26 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <EditText
-        android:id="@+id/settingsTextEdit"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="40sp"
-        android:gravity="center"
-        android:text="Settings sdfsdv safsd assfasf" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/buttonSettings1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:theme="@style/Base.Theme.Diplom_0_1"
+            android:text="" />
+
+        <Button
+            android:id="@+id/buttonSettings2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:theme="@style/MyTheme"
+            android:text="" />
+
+    </LinearLayout>
 </FrameLayout>

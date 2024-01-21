@@ -1,12 +1,7 @@
 package com.example.diplom_0_1.db
 
 import android.content.ContentValues
-import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.test.Word
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 //"CREATE TABLE Words(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER, first TEXT, " +
 //                "second TEXT, isGuessed INTEGER, guessedRank INTEGER)")
@@ -43,7 +38,8 @@ object WordDAO {
             val secondWord = cursor.getString(3)
             val isGueseed = cursor.getInt(4)
             val guessedRank = cursor.getInt(5)
-            val word = Word(id, dictId, firstWord, secondWord, isGueseed, guessedRank)
+            val example = cursor.getString(6)
+            val word = Word(id, dictId, firstWord, secondWord, isGueseed, guessedRank, example)
             words.add(word)
         }
         cursor.close()
@@ -62,7 +58,8 @@ object WordDAO {
             val secondWord = cursor.getString(3)
             val isGuessed = cursor.getInt(4)
             val guessedRank = cursor.getInt(5)
-            val word = Word(id, dictId, firstWord, secondWord, isGuessed, guessedRank)
+            val example = cursor.getString(6)
+            val word = Word(id, dictId, firstWord, secondWord, isGuessed, guessedRank, example)
             words.add(word)
         }
         cursor.close()
@@ -71,7 +68,7 @@ object WordDAO {
     }
 
     @JvmStatic
-    fun saveWordByDictName(dictName : String, firstWord : String, secondWord : String) {
+    fun saveWordByDictName(dictName: String, firstWord: String, secondWord: String, example: String) {
         val dictId = DictionaryDAO.getDictionaryIdByName(dictName)
         val db = DBUtils.getDataBase().writableDatabase
         val cv = ContentValues()
@@ -80,6 +77,9 @@ object WordDAO {
         cv.put("second", secondWord)
         cv.put("isGuessed", 0)
         cv.put("guessedRank", 0)
+        cv.put("example", example)
+        cv.put("firstLangId", 1)
+        cv.put("secondLangId", 2)
         db.insert("Words", null, cv)
         db.close()
     }

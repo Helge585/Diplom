@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.R
+import com.example.diplom_0_1.dialogfragments.ChooseWordDialogFragment
 import com.example.diplom_0_1.translate.ResponseParser
+import com.example.diplom_0_1.translate.Translating
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -30,11 +31,13 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var textView : TextView
+    lateinit var translatedTextView : TextView
 
-    private var translatedText = "TRRRANSLATTE"
+    private var translatedText = ""
     private var currentWord = "Not choosen"
-    private var currentTranslatings = listOf<String>()
+    private var currentSentence = ""
+    private var currentTranslatings = listOf<Translating>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -49,17 +52,18 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_translating, container, false)
-        textView = view.findViewById(R.id.textViewTransalting)
-        textView.setText(translatedText)
-        textView.setOnClickListener(this)
+        translatedTextView = view.findViewById(R.id.textViewTransalting)
+        translatedTextView.setText(translatedText)
+        translatedTextView.setOnClickListener(this)
         return view
     }
 
-    fun OnRecievedTranslatedWordFromMainActivity(word : String) {
+    fun OnRecievedTranslatedWordFromMainActivity(word: String, sentence: String) {
         currentWord = word
+        currentSentence = sentence
         //textView.setText(word)
         translate(word)
-        textView.setText(translatedText)
+        translatedTextView.setText(translatedText)
     }
 
     private fun parseResponse(response : String) {
@@ -70,9 +74,12 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
 //        context?.applicationContext?.contentResolver?.openInputStream()?.use { inputStream ->
 //            saxParser.parse(inputStream, fB2Parser)
 //        }
-        currentTranslatings = responseParser.getWords()
-        translatedText = currentTranslatings.toString()
+        currentTranslatings = responseParser.getTranslatings()
+        translatedText = currentTranslatings[0].translatings.toString()
         Log.i("Parsed Response", translatedText)
+        responseParser.getTranslatings().forEach {
+            Log.i("TranslatingFragment", it.toString())
+        }
 
     }
 
@@ -109,7 +116,9 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
         }.start()
     }
     override fun onClick(p0: View?) {
-        (activity as MainActivity).showChooseWordFragment(currentWord, currentTranslatings)
+        val chooseWordDialogFragment = ChooseWordDialogFragment(currentTranslatings, currentWord, currentSentence)
+        chooseWordDialogFragment.show(activity?.supportFragmentManager!!, "choooseWord")
+        //(activity as MainActivity).showChooseWordFragment(currentWord, currentTranslatings)
     }
     companion object {
         /**

@@ -1,5 +1,6 @@
 package com.example.diplom_0_1.book
 
+import android.util.Log
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 
@@ -9,6 +10,8 @@ class FB2Parser() : DefaultHandler() {
     private val AUTHOR = "author"
     private val BOOKTITLE = "book-title"
     private val TITLEINFO = "title-info"
+    private val TITLE = "title"
+    private val SECTION = "section"
 
     private val BODY = "body"
     private val PARAGRAPH = "p"
@@ -17,24 +20,29 @@ class FB2Parser() : DefaultHandler() {
     private var bookName = StringBuilder("")
     private var result = StringBuilder("")
 
-    private var bookBodyParaghes = mutableListOf<String>()
-    private var paragraphStrBuilder = StringBuilder("")
+    private var pagesList = mutableListOf<String>()
+    private var pageStrBuilder = StringBuilder("")
 
     private var inAuthor = false
     private var inBookTitle = false
     private var inTitleInfo = false
+    private var inTitle = false
+    private var inSection = false
 
     private var inBody = false
     private var inParagraph = false
 
+
+    private val pageLen = 500
+
     public fun getBookAnnotation() : BookAnnotation {
         val authorName = authorName.toString().replace("\\s+".toRegex(), " ").trim()
         val bookName = bookName.toString().replace("\\s+".toRegex(), " ").trim()
-        return BookAnnotation(-1, bookName, authorName, null)
+        return BookAnnotation(-1, bookName, authorName, null, 0)
     }
 
     public fun getBookBodyParagraphes() : List<String> {
-        return bookBodyParaghes.toList()
+        return pagesList.toList()
     }
 
     override fun startDocument() {
@@ -48,11 +56,11 @@ class FB2Parser() : DefaultHandler() {
         if (bookName.length > 0) {
             bookName = StringBuilder("")
         }
-        if (bookBodyParaghes.size > 0) {
-            bookBodyParaghes.clear()
+        if (pagesList.size > 0) {
+            pagesList.clear()
         }
-        if (paragraphStrBuilder.length > 0) {
-            paragraphStrBuilder = StringBuilder("")
+        if (pageStrBuilder.length > 0) {
+            pageStrBuilder = StringBuilder("")
         }
     }
 
@@ -68,75 +76,50 @@ class FB2Parser() : DefaultHandler() {
         attributes: Attributes?
     ) {
         //super.startElement(uri, localName, qName, attributes)
-        when (qName) {
-            AUTHOR -> {
-                inAuthor = true
-            }
-
-            BOOKTITLE -> {
-                inBookTitle = true
-            }
-
-            TITLEINFO -> {
-                inTitleInfo = true
-            }
-
-            BODY -> {
-                inBody = true
-            }
-
-            PARAGRAPH -> {
-                inParagraph = true
-            }
-        }
-//        if (qName.equals(AUTHOR)) {
-//            inAuthor = true
-//        }
-//        if (qName.equals(BOOKTITLE)) {
-//            inBookTitle = true
-//        }
-//        if (qName.equals(TITLEINFO)) {
-//            inTitleInfo = true
-//        }
+        val name = qName ?: ""
+        setElementStatus(name, true)
     }
 
     override fun endElement(uri: String?, localName: String?, qName: String?) {
         //super.endElement(uri, localName, qName)
-        when (qName) {
-            AUTHOR -> {
-                inAuthor = false
+        val name = qName ?: ""
+        setElementStatus(name, false)
+        when (name) {
+            SECTION -> {
+                while (pageStrBuilder.length > pageLen) {
+                    var subLen = pageLen - 1
+                    while (subLen < pageStrBuilder.length) {
+                        if (pageStrBuilder[subLen].isWhitespace()) {
+                            break
+                        }
+                        ++subLen
+                    }
+                    val page = pageStrBuilder.substring(0, subLen)
+                    val ost = pageStrBuilder.substring(subLen)
+                    pagesList.add(page)
+                    pageStrBuilder = StringBuilder(ost)
+                }
+                if (pageStrBuilder.length > 0) {
+                    pagesList.add(pageStrBuilder.toString())
+                    pageStrBuilder = StringBuilder("")
+                }
             }
-
-            BOOKTITLE -> {
-                inBookTitle = false
-            }
-
-            TITLEINFO -> {
-                inTitleInfo = false
-            }
-
-            BODY -> {
-                inBody = false
-            }
-
             PARAGRAPH -> {
-                inParagraph = false
-                if (paragraphStrBuilder.length > 0) {
-                    bookBodyParaghes.add(paragraphStrBuilder.toString())
-                    paragraphStrBuilder = StringBuilder("")
+                while (pageStrBuilder.length > pageLen) {
+                    var subLen = pageLen - 1
+                    while (subLen < pageStrBuilder.length) {
+                        if (pageStrBuilder[subLen].isWhitespace()) {
+                            break
+                        }
+                        ++subLen
+                    }
+                    val page = pageStrBuilder.substring(0, subLen)
+                    val ost = pageStrBuilder.substring(subLen)
+                    pagesList.add(page)
+                    pageStrBuilder = StringBuilder(ost)
                 }
             }
         }
-//        if (qName.equals(AUTHOR)) {
-//            inAuthor = false
-//        }
-//        if (qName.equals(BOOKTITLE)) {
-//            inBookTitle = false
-//            //bookName.trim()
-//        }
-//        if (qName.equals(TITLEINFO)) {
-//            inTitleInfo = false
-//        }
     }
 
     override fun characters(ch: CharArray?, start: Int, length: Int) {
@@ -150,8 +133,44 @@ class FB2Parser() : DefaultHandler() {
         if (inBookTitle) {
             bookName.append(ch, start, length)
         }
-        if (inBody && inParagraph) {
-            paragraphStrBuilder.append(ch, start, length)
+        if (inSection && inParagraph) {
+
+            pageStrBuilder.append(ch, start, length)
+            //Log.i("FB2Parser", pageStrBuilder.toString())
+//            if (pageStrBuilder.length > pageLen) {
+//                val page = pageStrBuilder.substring(0, pageLen)
+//                val ost = pageStrBuilder.substring(pageLen)
+//                pagesList.add(page)
+//                pageStrBuilder = StringBuilder(ost)
+//            }
+        }
+    }
+
+    private fun setElementStatus(el : String, status : Boolean) {
+        when (el) {
+            AUTHOR -> {
+                inAuthor = status
+            }
+
+            BOOKTITLE -> {
+                inBookTitle = status
+            }
+
+            TITLEINFO -> {
+                inTitleInfo = status
+            }
+
+            BODY -> {
+                inBody = status
+            }
+
+            PARAGRAPH -> {
+                inParagraph = status
+            }
+
+            SECTION -> {
+                inSection = status
+            }
         }
     }
 }

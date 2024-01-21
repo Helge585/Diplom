@@ -15,7 +15,7 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
     ) {
     }
 
-    private lateinit var fragment: ReadingFragment
+    lateinit var fragment: ReadingFragment
 
     fun setOnFragment(fr : ReadingFragment) {
         fragment = fr
@@ -54,7 +54,21 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
                     println("!!!  " + start + " " + end)
                     //println(v.toString())
                 }
-                fragment.sendTranslatedWordToMainActivity(text.toString().substring(start, end))
+                var sentenceStart = start
+                var sentenceEnd = end
+                var se = arrayListOf<Char>('.', '!', '?')
+                while (sentenceStart >= 0 && !(text[sentenceStart] in se)) {
+                    --sentenceStart
+                }
+                while (sentenceEnd < text.length && !(text[sentenceEnd] in se)) {
+                    ++sentenceEnd
+                }
+//                if (sentenceEnd - sentenceStart > 50) {
+//                    sentenceEnd = sentenceStart + 50
+//                }
+                //Log.i("BookParagraphView", "selected sentence = ${text.toString().substring(sentenceStart + 1, sentenceEnd)}")
+                fragment.sendTranslatedWordToMainActivity(text.toString().substring(start, end),
+                    text.toString().substring(sentenceStart + 1, sentenceEnd))
             }
         }
         return super.onTouchEvent(event)

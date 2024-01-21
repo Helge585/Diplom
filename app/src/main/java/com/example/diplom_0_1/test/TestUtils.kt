@@ -13,6 +13,8 @@ object TestUtils {
     class TestMode(val name : String, val mode : Mode) {}
 
     @JvmStatic
+    var themeMode = 0
+    @JvmStatic
     fun getTestModesList() : List<TestMode> {
         val result = mutableListOf<TestMode>()
         result.add(TestMode("Ввод на иностранном языке", Mode.WritingFirstTest))

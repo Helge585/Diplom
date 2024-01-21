@@ -14,7 +14,7 @@ import com.example.diplom_0_1.db.DictionaryDAO
 
 class CreateDictionaryDialogFragment : DialogFragment() {
 
-    private var bookIndex = -1
+    private var bookIndex = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dictName = EditText(context)
@@ -24,6 +24,9 @@ class CreateDictionaryDialogFragment : DialogFragment() {
         books.forEach {
             bookNames.add(it.bookName)
         }
+        if (bookNames.size > 0) {
+            dictName.setText(bookNames[0])
+        }
         bookNames.add("без книги")
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -31,11 +34,11 @@ class CreateDictionaryDialogFragment : DialogFragment() {
                 .setSingleChoiceItems(
                     bookNames.toTypedArray(), 0
                 ) { dialog, item ->
-                    if (item == bookNames.size - 1) {
-                        bookIndex= -1
-                    } else {
-                        bookIndex = item
-                    }
+//                    if (item == bookNames.size - 1) {
+//                        bookIndex= -1
+//                    } else {
+//                        bookIndex = item
+//                    }
                     Log.i("CreateDictionaryDialogFragment", "bookName = " + bookNames[item] + ", bookId = " + books[bookIndex].bookId)
                 }
                 .setView(dictName)
