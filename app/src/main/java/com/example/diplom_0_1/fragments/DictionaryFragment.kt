@@ -10,10 +10,12 @@ import android.widget.LinearLayout
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.TestDAO
 import com.example.diplom_0_1.db.WordDAO
+import com.example.diplom_0_1.dialogfragments.ShowTestResultFragmentDialog
 import com.example.diplom_0_1.test.TestCase
 import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.test.TestUtils.Mode
@@ -104,6 +106,12 @@ class DictionaryFragment : Fragment() {
             newWordsCount = allWordsCount - triedCount
             TestDAO.updateTest(dictId, rightCount.toDouble() / triedCount, mode)
             Log.i("Dictionary Fragment", "mode = $mode, triedCount = $triedCount, rightCount = $rightCount, allCount = $allWordsCount")
+            val resultShow = ShowTestResultFragmentDialog()
+            val args = Bundle()
+            args.putString("result", "\nВсего слов: $allWordsCount\nОтвечены: $triedCount\nВерно: $rightCount\n" +
+                    "Неверно: ${triedCount - rightCount}")
+            resultShow.arguments = args
+            resultShow.show(activity?.supportFragmentManager!!, "testResult")
         }
 
         linearLayoutMain = view.findViewById(R.id.linnn)

@@ -47,6 +47,10 @@
         android:id="@+id/dictionaryEditingFragment"
         android:name="com.example.diplom_0_1.fragments.DictionaryFragment"
         android:label="fragment_dictionary_editing"
-        tools:layout="@layout/fragment_dictionary_editing" />
+        tools:layout="@layout/fragment_dictionary_editing" >
+        <action
+            android:id="@+id/action_dictionaryEditingFragment_to_dictionariesFragment"
+            app:destination="@id/dictionariesFragment" />
+    </fragment>
 
 </navigation>

@@ -15,7 +15,7 @@ import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.DictionaryDAO
 import com.example.diplom_0_1.db.WordDAO
-import com.example.diplom_0_1.dialogfragments.ChooseTestSettingsDialogFragment
+import com.example.diplom_0_1.dialogfragments.ShowDictionaryInformationDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
@@ -53,19 +53,22 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
             Log.i("Dictionary", it.toString())
             dicts.add(it)
             val dw = DictionaryAnnotationView(id, it, context)
-            dw.getOpenButton().setOnClickListener {
-                openDictionary(dw.dictionary, TestUtils.Mode.Edit)
-            }
-            dw.getTestButton().setOnClickListener {
-                TestUtils.currentDictionaryId = dw.dictionary.id
-                (activity as MainActivity).showTestChoosingFragmentDialog(dw.dictionary)
-            }
+//            dw.getOpenButton().setOnClickListener {
+//                openDictionary(dw.dictionary, TestUtils.Mode.Edit)
+//            }
+//            dw.getTestButton().setOnClickListener {
+//                TestUtils.currentDictionaryId = dw.dictionary.id
+//                (activity as MainActivity).showTestChoosingFragmentDialog(dw.dictionary)
+//            }
             dw.getInfoButton().setOnClickListener {
                 val w = WordDAO.getAllWords()
                 for (word in w) {
                     Log.i("Dictionaries fragment, Info", word.toString())
                 }
-                (activity as MainActivity).showDictionaryInformationDialogFragment(dw.dictionary.getBundleInfo())
+                val menuDialogFragment = ShowDictionaryInformationDialogFragment(this, dw.dictionary)
+                menuDialogFragment.arguments = dw.dictionary.getBundleInfo()
+                menuDialogFragment.show(activity?.supportFragmentManager!!, "dictMenu")
+                //(activity as MainActivity).showDictionaryInformationDialogFragment(dw.dictionary.getBundleInfo())
 
             }
             linearLayout.addView(dw)
