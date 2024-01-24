@@ -60,7 +60,7 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
 //                TestUtils.currentDictionaryId = dw.dictionary.id
 //                (activity as MainActivity).showTestChoosingFragmentDialog(dw.dictionary)
 //            }
-            dw.getInfoButton().setOnClickListener {
+            dw.setOnClickListener {
                 val w = WordDAO.getAllWords()
                 for (word in w) {
                     Log.i("Dictionaries fragment, Info", word.toString())

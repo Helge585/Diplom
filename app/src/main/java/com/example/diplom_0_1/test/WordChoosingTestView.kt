@@ -43,11 +43,12 @@ class WordChoosingTestView(override val word : Word, answers : List<String>, con
         var tableRow = TableRow(context)
         tableRow.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
-        var _answers = if (mode == TestUtils.Mode.ChoosingSecondTest) {
-            answers + word.secondWord
-        } else {
-            answers + word.firstWord
-        }
+//        var _answers = if (mode == TestUtils.Mode.ChoosingSecondTest) {
+//            answers + word.secondWord
+//        } else {
+//            answers + word.firstWord
+//        }
+        var _answers = answers
         _answers = _answers.shuffled()
         _answers.forEach {
             val tw = Button(context)

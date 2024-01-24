@@ -16,7 +16,7 @@ class DictionaryAnnotationView @JvmOverloads constructor(
     val dictId : Int, val dictionary: Dictionary, context: Context?, attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
     private val btName : TextView = TextView(context)
-    private val btInfo : Button = Button(context)
+    //private val btInfo : Button = Button(context)
 //    private val btDelete : Button = Button(context)
 //    private val btOpen : Button = Button(context)
 //    private val btTest : Button = Button(context)
@@ -31,7 +31,7 @@ class DictionaryAnnotationView @JvmOverloads constructor(
 
         btName.setText("Словарь: " + dictionary.name)
         btName.textSize = 20F
-        btInfo.setText("Инфо")
+        //btInfo.setText("Инфо")
 //        btOpen.setText("Открыть")
 //        btTest.setText("Tест")
 //        btDelete.setText("Удалить")
@@ -39,9 +39,9 @@ class DictionaryAnnotationView @JvmOverloads constructor(
 //        btDelete.setOnClickListener {
 //            DictionaryDAO.deleteById(dictionary.id)
 //        }
-        btInfo.setOnClickListener {
-            Log.i("DictionaryAnnotationView", dictionary.toString())
-        }
+//        btInfo.setOnClickListener {
+//            Log.i("DictionaryAnnotationView", dictionary.toString())
+//        }
         setPadding(30, 30, 30 , 30)
 
         orientation = VERTICAL
@@ -51,7 +51,7 @@ class DictionaryAnnotationView @JvmOverloads constructor(
         lin2.orientation = HORIZONTAL
 
         lin1.addView(btName)
-        lin1.addView(btInfo)
+//        lin1.addView(btInfo)
 
         lin1.gravity = Gravity.CENTER_HORIZONTAL
         lin2.gravity = Gravity.CENTER_HORIZONTAL
@@ -61,10 +61,10 @@ class DictionaryAnnotationView @JvmOverloads constructor(
 //        lin2.addView(btDelete)
 
         addView(lin1)
-        addView(lin2)
+        //addView(lin2)
     }
 
 //    fun getOpenButton() = btOpen
 //    fun getTestButton() = btTest
-    fun getInfoButton() = btInfo
+    //fun getInfoButton() = btInfo
 }

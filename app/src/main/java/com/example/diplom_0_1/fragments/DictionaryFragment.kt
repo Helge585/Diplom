@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.TestDAO
@@ -23,10 +22,6 @@ import com.example.diplom_0_1.test.TestsFactory
 import com.example.diplom_0_1.test.WordChoosingTestView
 import com.example.diplom_0_1.test.WordView
 import com.example.diplom_0_1.test.WordWritingTestView
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -158,14 +153,14 @@ class DictionaryFragment : Fragment() {
             Mode.ChoosingFirstTest -> {
                 words.forEach {
                     linearLayoutMain.addView(WordChoosingTestView(it,
-                        TestsFactory.getWrongAnswersForWord(it.secondWord, true),
+                        TestsFactory.getWrongAnswersForWord(it, true),
                         context, Mode.ChoosingFirstTest))
                 }
             }
             Mode.ChoosingSecondTest -> {
                 words.forEach {
                     linearLayoutMain.addView(WordChoosingTestView(it,
-                        TestsFactory.getWrongAnswersForWord(it.firstWord, false),
+                        TestsFactory.getWrongAnswersForWord(it, false),
                         context, Mode.ChoosingSecondTest))
                 }
             }

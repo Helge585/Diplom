@@ -84,6 +84,7 @@ class BooksFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_books, container, false)
 
+
         linearLayout = view.findViewById(R.id.linearLayoutInScrollView)
         //textViewPlain = view.findViewById(R.id.textViewPlain)
 

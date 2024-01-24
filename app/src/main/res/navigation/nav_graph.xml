@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.diplom_0_1.fragments.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Настройки"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/booksFragment"
         android:name="com.example.diplom_0_1.fragments.BooksFragment"
-        android:label="fragment_books"
+        android:label="Книги"
         tools:layout="@layout/fragment_books" >
         <action
             android:id="@+id/action_booksFragment_to_readingFragment"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/dictionariesFragment"
         android:name="com.example.diplom_0_1.fragments.DictionariesFragment"
-        android:label="fragment_dictionaries"
+        android:label="Слова"
         tools:layout="@layout/fragment_dictionaries" >
         <action
             android:id="@+id/action_dictionariesFragment_to_dictionaryEditingFragment"
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/readingFragment"
         android:name="com.example.diplom_0_1.fragments.ReadingFragment"
-        android:label="fragment_reading"
+        android:label=""
         tools:layout="@layout/fragment_reading" >
         <argument
             android:name="string"
@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/dictionaryEditingFragment"
         android:name="com.example.diplom_0_1.fragments.DictionaryFragment"
-        android:label="fragment_dictionary_editing"
+        android:label=""
         tools:layout="@layout/fragment_dictionary_editing" >
         <action
             android:id="@+id/action_dictionaryEditingFragment_to_dictionariesFragment"

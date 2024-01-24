@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class DBManager(
     context: Context?,
-    name: String? = "test14.db",
+    name: String? = "test16.db",
     factory: SQLiteDatabase.CursorFactory? = null,
     version: Int = 1
 ) : SQLiteOpenHelper(context, name, factory, version) {

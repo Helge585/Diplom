@@ -1,6 +1,5 @@
 package com.example.diplom_0_1.test
 
-import android.text.Selection
 import android.util.Log
 import com.example.diplom_0_1.db.WordDAO
 import com.example.diplom_0_1.test.TestUtils.TestDirectionType
@@ -50,17 +49,25 @@ object TestsFactory {
     }
 
     @JvmStatic
-    fun getWrongAnswersForWord(rightWord : String, isFirstWords : Boolean) : List<String> {
+    fun getWrongAnswersForWord(word: Word, isFirstWords: Boolean) : List<String> {
         val randomWords = mutableListOf<String>()
         var wordCount = 5
         if (allWords.size <= 5) {
             wordCount = allWords.size - 1
         }
+        var showedWord = ""
+        if (isFirstWords) {
+            randomWords.add(word.firstWord)
+            showedWord = word.secondWord
+        } else {
+            randomWords.add(word.secondWord)
+            showedWord = word.firstWord
+        }
         var i = 0;
         while (i < wordCount) {
             val randomPair = allWords.random()
             val randomWord = if (isFirstWords) { randomPair.firstWord } else { randomPair.secondWord }
-            if (randomWord != rightWord && !randomWords.contains(randomWord)) {
+            if (randomWord != showedWord && !randomWords.contains(randomWord)) {
                 randomWords.add(randomWord)
                 ++i
             }
