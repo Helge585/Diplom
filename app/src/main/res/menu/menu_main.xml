@@ -4,14 +4,14 @@
         <item
             android:id="@+id/settingsFragment"
             android:icon="@android:drawable/radiobutton_off_background"
-            android:title="Settings" />
+            android:title="Настройки" />
         <item
             android:id="@+id/booksFragment"
             android:icon="@android:drawable/radiobutton_off_background"
-            android:title="Books" />
+            android:title="Книги" />
         <item
             android:id="@+id/dictionariesFragment"
             android:icon="@android:drawable/radiobutton_off_background"
-            android:title="Words" />
+            android:title="Слова" />
     </group>
 </menu>

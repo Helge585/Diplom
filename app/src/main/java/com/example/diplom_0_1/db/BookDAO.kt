@@ -3,6 +3,7 @@ package com.example.diplom_0_1.db
 import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
+import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.book.BookAnnotation
 import com.example.diplom_0_1.test.Word
 
@@ -37,6 +38,18 @@ object BookDAO {
         val result = db.update("Books", values, "id = ?",
             arrayOf(bookId.toString()))
         Log.i("BookDAO", "bookId=$bookId, page=$page, result=$result")
+        db.close()
+    }
+
+    @JvmStatic
+    fun create(bookAnnotation : BookAnnotation) {
+        val db = DBUtils.getDataBase().writableDatabase
+        val cv = ContentValues()
+        cv.put("uri", bookAnnotation.uri.toString())
+        cv.put("name", bookAnnotation.bookName)
+        cv.put("author", bookAnnotation.authorName)
+        cv.put("page", 0)
+        db.insert("Books", null, cv)
         db.close()
     }
 }

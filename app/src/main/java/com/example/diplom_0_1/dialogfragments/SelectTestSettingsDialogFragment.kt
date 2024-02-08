@@ -1,6 +1,5 @@
 package com.example.diplom_0_1.dialogfragments
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
@@ -21,8 +20,7 @@ import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.test.TestUtils.TestWordType
 import com.example.diplom_0_1.test.TestUtils.TestDirectionType
 
-
-class ChooseTestSettingsDialogFragment : DialogFragment() {
+class SelectTestSettingsDialogFragment : DialogFragment() {
     
     private var newWordsCount = 0;
     private var wrongGuessWordsCount = 0;
@@ -30,12 +28,6 @@ class ChooseTestSettingsDialogFragment : DialogFragment() {
     private var currentWordsCount = 0;
     private var testsWordsType : TestWordType = TestWordType.Any
     private var testDirectionType : TestDirectionType = TestDirectionType.Random;
-
-    private val testTypes = arrayOf("sscfs", "asdcsdv", "sdfsdf")
-    private val testTypes2 = arrayOf("23234", "234", "23423423")
-    //private var layout2 : LinearLayout? = null
-
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -119,9 +111,6 @@ class ChooseTestSettingsDialogFragment : DialogFragment() {
         radioGroupTestDirection.addView(r3)
         radioGroupTestDirection.check(r1.id)
         radioGroupTestDirection.setOnCheckedChangeListener { radioGroup, i ->
-//            Log.i("ChooseTestSettingsDialogFragment", "i is " + i)
-//            Log.i("ChooseTestSettingsDialogFragment", "checked buuton is " +
-        //            (radioGroup.get(i - 4) as RadioButton).text)
             when (i) {
                 r1.id -> {
                     testDirectionType = TestDirectionType.Random
@@ -147,21 +136,14 @@ class ChooseTestSettingsDialogFragment : DialogFragment() {
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Test Settings")
-//                .setSingleChoiceItems(
-//                    testTypes, 1
-//                ) { dialog, item ->
-//
-//                }
+            builder.setTitle("Настройки")
                 .setView(layout2)
                 .setPositiveButton("Выбрать") { dialog, id ->
-                   // Log.i("ChooseTestSettingsDialogFragment", "$testsWordsType, $wt, $testDirectionType, $tt, " + wordCountEditText.text.toString())
                     (activity as MainActivity).updateDictionaryFragment(
                         testsWordsType, testDirectionType, Integer.parseInt(wordCountEditText.text.toString())
                     )
                 }
                 .setNegativeButton("Отменить") { dialog, id ->
-                    //dismiss()
                 }
 
             builder.create()

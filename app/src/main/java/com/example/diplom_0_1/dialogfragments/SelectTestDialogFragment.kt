@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.R
 
-class ChooseTestDialogFragment : DialogFragment() {
+class SelectTestDialogFragment : DialogFragment() {
 
     private var testsModes = listOf<TestUtils.TestMode>()
     private var dictName = "Default"

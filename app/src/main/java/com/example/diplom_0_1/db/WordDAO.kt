@@ -3,9 +3,6 @@ package com.example.diplom_0_1.db
 import android.content.ContentValues
 import com.example.diplom_0_1.test.Word
 
-//"CREATE TABLE Words(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER, first TEXT, " +
-//                "second TEXT, isGuessed INTEGER, guessedRank INTEGER)")
-
 object WordDAO {
     @JvmStatic
     fun deleteWordById(wordId : Int) {

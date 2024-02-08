@@ -11,22 +11,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.db.DictionaryDAO
 import com.example.diplom_0_1.dictionary.Dictionary
 import com.example.diplom_0_1.fragments.DictionariesFragment
 import com.example.diplom_0_1.test.TestUtils
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChooseWordDialogFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ShowDictionaryInformationDialogFragment(
     val dictsFragment: DictionariesFragment,
     val dictionary: Dictionary
@@ -75,7 +64,12 @@ class ShowDictionaryInformationDialogFragment(
         btTest.setText("Тест")
         btTest.setOnClickListener {
             TestUtils.currentDictionaryId = dictionary.id
-            (activity as MainActivity).showTestChoosingFragmentDialog(dictionary)
+            val selectTestDialogFragment = SelectTestDialogFragment()
+            val args = Bundle()
+            args.putString("dictName", dictionary.name)
+            selectTestDialogFragment.arguments = args
+            selectTestDialogFragment.show(activity!!.supportFragmentManager, "tests")
+            //(activity as MainActivity).showTestChoosingFragmentDialog(dictionary)
             dismiss()
         }
         val btDelete = Button(context)

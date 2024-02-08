@@ -4,10 +4,6 @@ import android.content.ContentValues
 import com.example.diplom_0_1.dictionary.Dictionary
 import com.example.diplom_0_1.test.TestResult
 
-//db?.execSQL("CREATE TABLE Dictionaries (id INTEGER PRIMARY KEY AUTOINCREMENT, bookId INTEGER, name TEXT)")
-//db?.execSQL("CREATE TABLE Tests(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER," +
-//"testType testTypeId, lastResult REAL, averageResult REAL, lastDate REAL)")
-//db?.execSQL("CREATE TABLE TestTypes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)")
 object DictionaryDAO {
 
     fun create(bookId : Int, name : String) {

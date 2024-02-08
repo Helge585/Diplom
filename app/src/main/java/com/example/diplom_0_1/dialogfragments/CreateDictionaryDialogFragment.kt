@@ -34,12 +34,7 @@ class CreateDictionaryDialogFragment : DialogFragment() {
                 .setSingleChoiceItems(
                     bookNames.toTypedArray(), 0
                 ) { dialog, item ->
-//                    if (item == bookNames.size - 1) {
-//                        bookIndex= -1
-//                    } else {
-//                        bookIndex = item
-//                    }
-                    Log.i("CreateDictionaryDialogFragment", "bookName = " + bookNames[item] + ", bookId = " + books[bookIndex].bookId)
+
                 }
                 .setView(dictName)
                 .setPositiveButton("Выбрать") { dialog, id ->

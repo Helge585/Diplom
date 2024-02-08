@@ -10,11 +10,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-//"CREATE TABLE Tests(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER," +
-//"testTypeId INTEGER, lastResult REAL, averageResult REAL, lastDate TEXT)")
-
-//"CREATE TABLE TestTypes(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)")
-
 object TestDAO {
 
     @JvmStatic

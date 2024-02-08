@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class DBManager(
     context: Context?,
-    name: String? = "test16.db",
+    name: String? = "test18.db",
     factory: SQLiteDatabase.CursorFactory? = null,
     version: Int = 1
 ) : SQLiteOpenHelper(context, name, factory, version) {
 
+    //val _name = name
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE Books (id INTEGER PRIMARY KEY AUTOINCREMENT, uri TEXT UNIQUE, name TEXT, author TEXT, page INTEGER)")
         db?.execSQL("CREATE TABLE Dictionaries (id INTEGER PRIMARY KEY AUTOINCREMENT, bookId INTEGER, name TEXT)")
@@ -29,8 +30,8 @@ class DBManager(
                 "(3, 1, 3, 0, 0, '---'), (4, 1, 4, 0, 0, '---')")
     }
 
-    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME)
+    override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+//        db?.execSQL("DROP TABLE IF EXISTS " + _name)
 //        onCreate(db)
     }
 

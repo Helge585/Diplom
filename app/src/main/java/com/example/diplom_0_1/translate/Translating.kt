@@ -6,10 +6,6 @@ class Translating() {
     var word = ""
     var partOfSpeech = ""
 
-    init {
-
-    }
-
     override fun toString(): String {
         return "Translating(translatings=$translatings, examples=$examples, word='$word', partOfSpeech='$partOfSpeech')"
     }

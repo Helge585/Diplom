@@ -31,8 +31,6 @@ class WordChoosingTestView(override val word : Word, answers : List<String>, con
         } else {
             guessedButton.setText(word.secondWord)
         }
-
-        //guessedTextView.background = border
         guessedButton.setPadding(15, 15, 15, 15)
         guessedButton.textSize = 20F
         addView(guessedButton)
@@ -43,11 +41,6 @@ class WordChoosingTestView(override val word : Word, answers : List<String>, con
         var tableRow = TableRow(context)
         tableRow.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
-//        var _answers = if (mode == TestUtils.Mode.ChoosingSecondTest) {
-//            answers + word.secondWord
-//        } else {
-//            answers + word.firstWord
-//        }
         var _answers = answers
         _answers = _answers.shuffled()
         _answers.forEach {
@@ -56,12 +49,7 @@ class WordChoosingTestView(override val word : Word, answers : List<String>, con
                 checkAnswer(it as Button)
             }
             tw.setPadding(15, 15, 15, 15)
-            //tw.background = border
             tw.textSize = 20F
-            //val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            //lp.setMargins(10, 10, 10, 10)
-           // tw.layoutParams = lp
-            //tw.setBackgroundColor(Color.GRAY)
             tw.setText(it)
             answersButtons.add(tw)
             if (i < COLUMNS_COUNT) {

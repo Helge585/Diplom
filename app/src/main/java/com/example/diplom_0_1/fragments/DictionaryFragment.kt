@@ -14,6 +14,7 @@ import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.TestDAO
 import com.example.diplom_0_1.db.WordDAO
+import com.example.diplom_0_1.dialogfragments.SelectTestSettingsDialogFragment
 import com.example.diplom_0_1.dialogfragments.ShowTestResultFragmentDialog
 import com.example.diplom_0_1.test.TestCase
 import com.example.diplom_0_1.test.TestUtils
@@ -24,25 +25,12 @@ import com.example.diplom_0_1.test.WordView
 import com.example.diplom_0_1.test.WordWritingTestView
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DictionaryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DictionaryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var settingButton : Button
     private lateinit var finishButton: Button
     private lateinit var linearLayoutMain : LinearLayout
-
+    private val selectTestSettingsDialogFragment = SelectTestSettingsDialogFragment()
 
     private var newWordsCount = 0;
     private var wrongGuessWordsCount = 0;
@@ -50,17 +38,12 @@ class DictionaryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         (activity as MainActivity).bottomNavView.isVisible = false
         val view = inflater.inflate(R.layout.fragment_dictionary_editing, container, false)
         val dictId = TestUtils.currentDictionaryId
@@ -69,8 +52,12 @@ class DictionaryFragment : Fragment() {
         settingButton = view.findViewById(R.id.buttonSettings)
         settingButton.setText("Настроить")
         settingButton.setOnClickListener {
-            (activity as MainActivity).showTestSettingsDialogFragment(allWordsCount, newWordsCount,
-                wrongGuessWordsCount)
+            val args = Bundle()
+            args.putInt("allWordsCount", allWordsCount)
+            args.putInt("newWordsCount", newWordsCount)
+            args.putInt("wrongGuessWordsCount", wrongGuessWordsCount)
+            selectTestSettingsDialogFragment.arguments = args
+            selectTestSettingsDialogFragment.show(activity!!.supportFragmentManager, "testSettings")
         }
         finishButton = view.findViewById(R.id.buttonFinish)
         finishButton.setText("Завершить")
@@ -165,25 +152,5 @@ class DictionaryFragment : Fragment() {
                 }
             }
         }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DictionaryEditingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DictionaryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

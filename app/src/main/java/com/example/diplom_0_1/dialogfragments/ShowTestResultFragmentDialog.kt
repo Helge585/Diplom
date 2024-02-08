@@ -10,9 +10,6 @@ import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.R
 
 class ShowTestResultFragmentDialog : DialogFragment() {
-
-
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val textView = TextView(context)

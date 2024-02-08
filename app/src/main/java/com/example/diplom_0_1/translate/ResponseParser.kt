@@ -27,21 +27,13 @@ class ResponseParser() : DefaultHandler() {
     private var currentText = StringBuilder("")
 
     override fun startDocument() {
-        //super.startDocument()
-//        if (words.size > 0) {
-//            words.clear()
-//        }
-//        if (word.length > 0) {
-//            word = StringBuilder("")
-//        }
         if (translatings.size > 0) {
             translatings.clear()
         }
     }
 
     override fun endDocument() {
-        //super.endDocument()
-        //result.trim()
+
     }
 
     override fun startElement(
@@ -50,7 +42,6 @@ class ResponseParser() : DefaultHandler() {
         qName: String?,
         attributes: org.xml.sax.Attributes?
     ) {
-        //super.startElement(uri, localName, qName, attributes)
         when (qName) {
             DEF -> {
                 currentText = StringBuilder("")
@@ -67,11 +58,6 @@ class ResponseParser() : DefaultHandler() {
     }
 
     override fun endElement(uri: String?, localName: String?, qName: String?) {
-        //super.endElement(uri, localName, qName)
-//        if (word.length > 0) {
-//            words.add(word.toString())
-//            word = StringBuilder("")
-//        }
         when (qName) {
             DEF -> {
                 translatings.add(translating)
@@ -83,7 +69,6 @@ class ResponseParser() : DefaultHandler() {
                 }
                 if (inEx) {
                     translating.examples.add(currentText.toString())
-                    //Log.i("ResponseParser", "saving " + currentText.toString())
                     currentText = StringBuilder("")
                 }
                 if (inDef && inTr && !inEx && !inSyn && !inMean) {
@@ -97,10 +82,6 @@ class ResponseParser() : DefaultHandler() {
     }
 
     override fun characters(ch: CharArray?, start: Int, length: Int){
-        //super.characters(ch, start, length)
-//        if (inTr && !inEx && !inMean && !inSyn && inText) {
-//            word.append(ch, start, length)
-//        }
         if (!inDef) {return}
         if (!inTr && inText) {
             currentText.append(ch, start, length)
@@ -111,7 +92,6 @@ class ResponseParser() : DefaultHandler() {
         }
         if (inEx && inText) {
             currentText.append(ch, start, length)
-            //Log.i("ResponseParser", "creating " + currentText.toString())
         }
         if (inTr && inText && !inEx) {
             currentText.append(ch, start, length)

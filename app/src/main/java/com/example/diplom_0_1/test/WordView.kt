@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.WordDAO
 import com.example.diplom_0_1.fragments.DictionaryFragment
@@ -75,6 +77,9 @@ class WordView(val word : Word, context: Context?) : LinearLayout(context) {
             setEditableFlag(false)
             changeButton.isEnabled = false
             deleteButton.isEnabled = false
+            Toast.makeText(context,
+                HtmlCompat.fromHtml("<font color='red'>Слово удалено</font>", HtmlCompat.FROM_HTML_MODE_LEGACY),
+                Toast.LENGTH_LONG).show()
         }
 
         changeButton.setOnClickListener {
@@ -95,6 +100,9 @@ class WordView(val word : Word, context: Context?) : LinearLayout(context) {
                 if (newFirst != null || newSecond != null) {
                     WordDAO.updateWordFirstSecond(word.id, newFirst, newSecond)
                 }
+                Toast.makeText(context,
+                    HtmlCompat.fromHtml("<font color='red'>Слово сохранено</font>", HtmlCompat.FROM_HTML_MODE_LEGACY),
+                    Toast.LENGTH_LONG).show()
             } else {
                 isEditableMode = true
                 setEditableFlag(true)

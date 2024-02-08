@@ -20,7 +20,6 @@ class WordWritingTestView(override val word : Word, context: Context?, val mode 
 
     init {
         orientation = VERTICAL
-        //background = resources.getDrawable(R.drawable.border, null)
         val border = GradientDrawable()
         border.setColor(-0x1)
         border.setStroke(3, -0x1000000)
@@ -66,8 +65,6 @@ class WordWritingTestView(override val word : Word, context: Context?, val mode 
 
         addView(firstWord)
         addView(secondWord)
-
-        //layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 
     private fun checkAnswer() {

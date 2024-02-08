@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.diplom_0_1.db.WordDAO
 
-class ChooseDictionaryDialogFragment : DialogFragment() {
+class SelectDictionaryDialogFragment : DialogFragment() {
 
     private var firstWord = ""
     private var secondWord = ""
