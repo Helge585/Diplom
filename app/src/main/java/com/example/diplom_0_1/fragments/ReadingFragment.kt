@@ -36,6 +36,10 @@ class ReadingFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_reading, container, false)
 
+//        val dm = resources.displayMetrics
+//        Log.i("ReadingFragment", "width = " + dm.widthPixels)
+//        Log.i("ReadingFragment", "height = " + dm.heightPixels)
+
         pagesCountView = view.findViewById(R.id.pagesCount)
         nextButton = view.findViewById(R.id.nextButton)
         prevButton = view.findViewById(R.id.prevButton)
@@ -46,18 +50,21 @@ class ReadingFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = BookReadingFragmentRecyclerAdapter(pages, this)
         recyclerView.scrollToPosition(currentNumber)
-        pagesCountView.setText("Страница: ${ currentNumber + 1} / ${ allCount + 1}")
+        pagesCountView.setText("Страница: ${ currentNumber + 1} / ${ allCount}")
         Log.i("Reading fragment", "on create view")
+        Log.i("Reading fragment", "" + allCount)
+        Log.i("Reading fragment", pages[allCount - 1])
+        Log.i("Reading fragment", pages[allCount - 2])
         setSuppressLayoutFlag(true)
         (activity as MainActivity).bottomNavView.isVisible = false
 
         nextButton.setOnClickListener {
-            if (currentNumber < allCount) {
+            if (currentNumber < allCount - 1) {
                 ++currentNumber
                 setSuppressLayoutFlag(false)
                 recyclerView.scrollToPosition(currentNumber)
                 setSuppressLayoutFlag(true)
-                pagesCountView.setText("Страница: ${ currentNumber + 1} / ${ allCount + 1}")
+                pagesCountView.setText("Страница: ${ currentNumber + 1} / ${ allCount}")
                 BookReader.updatePage(currentNumber)
             }
         }
@@ -67,7 +74,7 @@ class ReadingFragment : Fragment() {
                 setSuppressLayoutFlag(false)
                 recyclerView.scrollToPosition(currentNumber)
                 setSuppressLayoutFlag(true)
-                pagesCountView.setText("Страница: ${ currentNumber + 1} / ${ allCount + 1}")
+                pagesCountView.setText("Страница: ${ currentNumber + 1} / ${ allCount}")
                 BookReader.updatePage(currentNumber)
             }
         }

@@ -1,7 +1,9 @@
 package com.example.diplom_0_1
 
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -45,7 +47,25 @@ class MainActivity : AppCompatActivity() {
         bottomNavView.setupWithNavController(navController)
 
         translatingFragment = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
+
+        val dm = resources.displayMetrics
+
+        Log.i("Main Activity", "width = " + dm.widthPixels)
+        Log.i("Main Activity", "height = " + dm.heightPixels)
+        Log.i("Main Activity", "xdpi = " + dm.xdpi)
+        Log.i("Main Activity", "ydpi = " + dm.ydpi)
+
+        val paint = Paint()
+        paint.textSize = 42F // Устанавливаем размер шрифта из ресурсов
+        val fontMetrics = paint.fontMetrics
+        val textHeightPx = fontMetrics.bottom - fontMetrics.top
+        Log.i("Main Activity", "letter height = " + textHeightPx)
+        val textWidthPx = paint.measureText("A")
+        Log.i("Main Activity", "letter width = " + textWidthPx)
+
+        TestUtils.setPageSize(dm.widthPixels, dm.heightPixels, textWidthPx, textHeightPx)
     }
+
     fun setOnDictionaryEditingFragment(_deF : DictionaryFragment) {
         dictionaryFragment = _deF
     }

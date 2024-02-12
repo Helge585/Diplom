@@ -1,6 +1,7 @@
 package com.example.diplom_0_1.book
 
 import android.util.Log
+import com.example.diplom_0_1.test.TestUtils
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 
@@ -33,7 +34,7 @@ class FB2Parser() : DefaultHandler() {
     private var inParagraph = false
 
 
-    private val pageLen = 500
+    private val pageLen = TestUtils.getPageSize()
 
     public fun getBookAnnotation() : BookAnnotation {
         val authorName = authorName.toString().replace("\\s+".toRegex(), " ").trim()
@@ -134,8 +135,22 @@ class FB2Parser() : DefaultHandler() {
             bookName.append(ch, start, length)
         }
         if (inSection && inParagraph) {
-
-            pageStrBuilder.append(ch, start, length)
+            ch?.let {
+                var isWhiteSpaceBefore = false
+                for (i in start..start + length - 1) {
+//                    pageStrBuilder.append(ch[i])
+                    if (ch[i].isWhitespace()) {
+                        if (!isWhiteSpaceBefore) {
+                            pageStrBuilder.append(ch[i])
+                        }
+                        isWhiteSpaceBefore = true
+                    }
+                    if (!ch[i].isWhitespace()) {
+                        pageStrBuilder.append(ch[i])
+                        isWhiteSpaceBefore = false
+                    }
+                }
+            }
             //Log.i("FB2Parser", pageStrBuilder.toString())
 //            if (pageStrBuilder.length > pageLen) {
 //                val page = pageStrBuilder.substring(0, pageLen)

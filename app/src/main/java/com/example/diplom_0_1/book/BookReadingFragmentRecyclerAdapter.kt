@@ -37,6 +37,9 @@ class BookReadingFragmentRecyclerAdapter(private val pages: List<String>, privat
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.textEdit.setText(pages[position])
+        holder.textEdit.textSize = 21F
+        Log.i("Reading Fragment", "!!!123 textSize = " + holder.textEdit.textSize)
+
         //holder.textEdit.setSelection(0, 5)
     }
 
