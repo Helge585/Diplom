@@ -6,10 +6,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
-import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.R
 
-class ShowTestResultFragmentDialog : DialogFragment() {
+class TestResultFragmentDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val textView = TextView(context)

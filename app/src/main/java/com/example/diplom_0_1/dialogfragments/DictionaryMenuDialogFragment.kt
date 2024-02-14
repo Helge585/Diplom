@@ -8,17 +8,16 @@ import android.widget.LinearLayout.HORIZONTAL
 import android.widget.LinearLayout.VERTICAL
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.diplom_0_1.db.DictionaryDAO
-import com.example.diplom_0_1.dictionary.Dictionary
+import com.example.diplom_0_1.dictionary.DictionaryAnnotationView
 import com.example.diplom_0_1.fragments.DictionariesFragment
 import com.example.diplom_0_1.test.TestUtils
 
-class ShowDictionaryInformationDialogFragment(
+class DictionaryMenuDialogFragment(
     val dictsFragment: DictionariesFragment,
-    val dictionary: Dictionary
+    val dictView: DictionaryAnnotationView
 ) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -56,17 +55,17 @@ class ShowDictionaryInformationDialogFragment(
         val btOpen = Button(context)
         btOpen.setText("Открыть")
         btOpen.setOnClickListener {
-            dictsFragment.openDictionary(dictionary, TestUtils.Mode.Edit)
+            dictsFragment.openDictionary(dictView.dictionary, TestUtils.Mode.Edit)
             dismiss()
         }
 
         val btTest = Button(context)
         btTest.setText("Тест")
         btTest.setOnClickListener {
-            TestUtils.currentDictionaryId = dictionary.id
+            TestUtils.currentDictionaryId = dictView.dictionary.id
             val selectTestDialogFragment = SelectTestDialogFragment()
             val args = Bundle()
-            args.putString("dictName", dictionary.name)
+            args.putString("dictName", dictView.dictionary.name)
             selectTestDialogFragment.arguments = args
             selectTestDialogFragment.show(activity!!.supportFragmentManager, "tests")
             //(activity as MainActivity).showTestChoosingFragmentDialog(dictionary)
@@ -75,7 +74,8 @@ class ShowDictionaryInformationDialogFragment(
         val btDelete = Button(context)
         btDelete.setText("Удалить")
         btDelete.setOnClickListener {
-            DictionaryDAO.deleteById(dictionary.id)
+            DictionaryDAO.deleteById(dictView.dictionary.id)
+            dictsFragment.deleteDictionary(dictView)
             dismiss()
         }
         val layoutButtons = LinearLayout(context)

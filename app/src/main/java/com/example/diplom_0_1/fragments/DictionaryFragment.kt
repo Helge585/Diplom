@@ -15,7 +15,7 @@ import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.TestDAO
 import com.example.diplom_0_1.db.WordDAO
 import com.example.diplom_0_1.dialogfragments.SelectTestSettingsDialogFragment
-import com.example.diplom_0_1.dialogfragments.ShowTestResultFragmentDialog
+import com.example.diplom_0_1.dialogfragments.TestResultFragmentDialog
 import com.example.diplom_0_1.test.TestCase
 import com.example.diplom_0_1.test.TestUtils
 import com.example.diplom_0_1.test.TestUtils.Mode
@@ -88,7 +88,7 @@ class DictionaryFragment : Fragment() {
             newWordsCount = allWordsCount - triedCount
             TestDAO.updateTest(dictId, rightCount.toDouble() / triedCount, mode)
             Log.i("Dictionary Fragment", "mode = $mode, triedCount = $triedCount, rightCount = $rightCount, allCount = $allWordsCount")
-            val resultShow = ShowTestResultFragmentDialog()
+            val resultShow = TestResultFragmentDialog()
             val args = Bundle()
             args.putString("result", "\nВсего слов: $allWordsCount\nОтвечены: $triedCount\nВерно: $rightCount\n" +
                     "Неверно: ${triedCount - rightCount}")

@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class DBManager(
     context: Context?,
-    name: String? = "test18.db",
+    name: String? = "test19.db",
     factory: SQLiteDatabase.CursorFactory? = null,
     version: Int = 1
 ) : SQLiteOpenHelper(context, name, factory, version) {
 
     //val _name = name
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE Books (id INTEGER PRIMARY KEY AUTOINCREMENT, uri TEXT UNIQUE, name TEXT, author TEXT, page INTEGER)")
+        db?.execSQL("CREATE TABLE Books (id INTEGER PRIMARY KEY AUTOINCREMENT, uri TEXT UNIQUE, name TEXT, author TEXT, page INTEGER, image TEXT)")
         db?.execSQL("CREATE TABLE Dictionaries (id INTEGER PRIMARY KEY AUTOINCREMENT, bookId INTEGER, name TEXT)")
         db?.execSQL("CREATE TABLE Words(id INTEGER PRIMARY KEY AUTOINCREMENT, dictId INTEGER, first TEXT, " +
                 "second TEXT, isGuessed INTEGER, guessedRank INTEGER, example TEXT, firstLangId INTEGER, secondLangId INTEGER)")

@@ -3,8 +3,11 @@ package com.example.diplom_0_1.test
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.view.Gravity
 import android.widget.Button
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -67,10 +70,11 @@ class WordChoosingTestView(override val word : Word, answers : List<String>, con
         if (tableRow.size > 0) {
             tableLayout.addView(tableRow)
         }
+
+        tableLayout.isShrinkAllColumns = true
         addView(tableLayout)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
-
     fun checkAnswer(button : Button) {
         val isAnswerRight = if (mode == TestUtils.Mode.ChoosingSecondTest) {
             button.text.toString().lowercase() == word.secondWord.lowercase()
@@ -89,15 +93,12 @@ class WordChoosingTestView(override val word : Word, answers : List<String>, con
         }
         isTried = true
     }
-
     override fun isTried(): Boolean {
         return isTried
     }
-
     override fun isRight(): Boolean {
         return isRight
     }
-
     override fun getTestType(): TestUtils.Mode {
         return mode
     }

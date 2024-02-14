@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.diplom_0_1.dictionary.Dictionary
@@ -18,7 +16,7 @@ import com.example.diplom_0_1.R
 import com.example.diplom_0_1.db.DictionaryDAO
 import com.example.diplom_0_1.db.WordDAO
 import com.example.diplom_0_1.dialogfragments.CreateDictionaryDialogFragment
-import com.example.diplom_0_1.dialogfragments.ShowDictionaryInformationDialogFragment
+import com.example.diplom_0_1.dialogfragments.DictionaryMenuDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -47,7 +45,7 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
                 for (word in w) {
                     Log.i("Dictionaries fragment, Info", word.toString())
                 }
-                val menuDialogFragment = ShowDictionaryInformationDialogFragment(this, dw.dictionary)
+                val menuDialogFragment = DictionaryMenuDialogFragment(this, dw)
                 menuDialogFragment.arguments = dw.dictionary.getBundleInfo()
                 menuDialogFragment.show(activity?.supportFragmentManager!!, "dictMenu")
             }
@@ -63,6 +61,9 @@ class DictionariesFragment : Fragment(), View.OnClickListener {
         return view
     }
 
+    fun deleteDictionary(dw : DictionaryAnnotationView) {
+        linearLayout.removeView(dw)
+    }
     fun openDictionary(dict : Dictionary, mode : TestUtils.Mode) {
         TestUtils.currentDictionaryId = dict.id
         TestUtils.currentMode = mode

@@ -1,11 +1,18 @@
 package com.example.diplom_0_1.book
 
+
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
+import android.webkit.MimeTypeMap
 import com.example.diplom_0_1.db.BookDAO
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
+import com.example.diplom_0_1.test.TestUtils
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
+import java.util.Locale
 import javax.xml.parsers.SAXParserFactory
 
 
@@ -22,7 +29,8 @@ object BookReader {
     private var page = 0
     @JvmStatic
     private var bookId = -1
-
+    @JvmStatic
+    private var image = StringBuilder("")
     @JvmStatic
     fun getBookBody() : String? {
         return bookBody
@@ -42,10 +50,13 @@ object BookReader {
     }
 
     @JvmStatic
+    fun getImage() = image
+
+    @JvmStatic
     fun setCurrentBook(_uri : Uri, _page : Int, context: Context?, _bookId : Int = -1) {
         uri = _uri
+
         parseBook(uri!!, context)
-        bookBody = parsePlainTextByURI(uri!!, context)
         page = _page
         bookId = _bookId
     }
@@ -57,63 +68,76 @@ object BookReader {
     }
     @JvmStatic
     private fun parseBook(uri: Uri, context: Context?) {
-        val result = StringBuilder("")
-
-        val factory = SAXParserFactory.newInstance()
-        val saxParser = factory.newSAXParser()
-        val fB2Parser = FB2Parser()
-        context?.applicationContext?.contentResolver?.openInputStream(uri)?.use { inputStream ->
-            saxParser.parse(inputStream, fB2Parser)
+        if (getMimeType(BookReader.uri!!, context) == "text/plain") {
+            val pages = mutableListOf<String>()
+            val pageLen = TestUtils.getPageSize()
+            val text = parsePlainText(uri, context)
+            var start = 0;
+            while (start + pageLen < text.length) {
+                var endWithoutRazryv = start + pageLen - 1;
+                while (!text[endWithoutRazryv].isWhitespace()) {
+                    --endWithoutRazryv
+                }
+                pages.add(text.substring(start, endWithoutRazryv))
+                start = endWithoutRazryv
+            }
+            pages.add(text.substring(start, text.length))
+            bookBodyPages = pages.toList()
+            bookAnnotation = BookAnnotation(-1, getFileName(uri, context), "no author", uri, 0, "")
+            image = StringBuilder("")
+        } else {
+            val factory = SAXParserFactory.newInstance()
+            val saxParser = factory.newSAXParser()
+            val fB2Parser = FB2Parser()
+            context?.applicationContext?.contentResolver?.openInputStream(uri)?.use { inputStream ->
+                saxParser.parse(inputStream, fB2Parser) }
+            bookAnnotation = fB2Parser.getBookAnnotation()
+            bookBodyPages = fB2Parser.getBookBodyParagraphes()
+            image = fB2Parser.getImage()
+            bookAnnotation?.uri = uri
         }
-        bookAnnotation = fB2Parser.getBookAnnotation()
-        bookAnnotation?.uri = uri
-        bookBodyPages = fB2Parser.getBookBodyParagraphes()
     }
 
     @JvmStatic
-    private fun parsePlainTextByURI(uri: Uri, context: Context?): String {
-        val stringBuilder = StringBuilder("!!!!! ")
-//        contentResolver.openInputStream(uri)?.use { inputStream ->
-//            BufferedReader(InputStreamReader(inputStream)).use { reader ->
-//                var line: String? = reader.readLine()
-//                while (line != null) {
-//                    stringBuilder.append(line)
-//                    line = reader.readLine()
-//                }
-//            }
-//        }
-
-        context?.applicationContext?.contentResolver?.openInputStream(uri)?.use { inputStream ->
-            val factory = XmlPullParserFactory.newInstance()
-            factory.isNamespaceAware = true
-            val xpp = factory.newPullParser()
-            xpp.setInput(inputStream, null)
-
-            var isInBody = false;
-            var eventType = xpp.eventType
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-
-                val tagName = xpp.getName()
-                when (eventType) {
-                    XmlPullParser.START_TAG -> {
-                        if ("body".equals(tagName)) {
-                            isInBody = true
-                        }
-                    }
-                    XmlPullParser.TEXT -> {
-                        if (isInBody) {
-                            stringBuilder.append(xpp.text)
-                        }
-                    }
-                    XmlPullParser.END_TAG -> {
-                        if ("body".equals(tagName)) {
-                            isInBody = false
-                        }
-                    }
+    private fun parsePlainText(uri: Uri, context: Context?): String {
+        val stringBuilder = StringBuilder("")
+        context?.contentResolver?.openInputStream(uri)?.use { inputStream ->
+            BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                var line: String? = reader.readLine()
+                while (line != null) {
+                    stringBuilder.append(line)
+                    line = reader.readLine()
                 }
-                eventType = xpp.next()
             }
         }
         return stringBuilder.toString()
+    }
+    private fun getMimeType(uri: Uri, context : Context?): String? {
+        var mimeType : String? = ""
+        if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
+            val cr: ContentResolver? = context?.contentResolver
+            mimeType = cr?.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(
+                uri.toString()
+            )
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                fileExtension.lowercase(Locale.getDefault())
+            )
+        }
+        return mimeType ?: ""
+    }
+    private fun getFileName(uri: Uri, context : Context?) : String{
+        var fileName = "no name"
+        val cursor = context?.contentResolver?.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val i = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (i >= 0) {
+                    fileName = it.getString(i)
+                }
+            }
+        }
+        return fileName
     }
 }

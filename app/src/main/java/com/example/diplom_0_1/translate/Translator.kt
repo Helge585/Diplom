@@ -10,18 +10,23 @@ import javax.xml.parsers.SAXParserFactory
 object Translator {
     @JvmStatic
     private var currentTranslatings : List<Translating> = listOf(Translating())
-
+    @JvmStatic
+    private var isSuccess = false
+    @JvmStatic
+    fun getTranslateStatus() = isSuccess
     @JvmStatic
     fun translate(word : String) {
         Thread {
             val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94&lang=en-ru&text=$word&flags=4")
 
             val con = url.openConnection() as HttpURLConnection
+
             con.setRequestMethod("GET")
 
             val responseCode = con.responseCode
-            println("GET Response Code :: $responseCode")
+            Log.i("Translator","GET Response Code :: $responseCode")
             if (responseCode == HttpURLConnection.HTTP_OK) {
+                isSuccess = true
                 val iinn = BufferedReader(InputStreamReader(con.inputStream))
                 var inputLine: String?
                 val response = StringBuffer()
@@ -32,7 +37,7 @@ object Translator {
 
                 parseResponse(response.toString())
             } else {
-
+                isSuccess = false
             }
         }.start()
     }

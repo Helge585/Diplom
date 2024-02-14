@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.diplom_0_1.test.TestUtils
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
+import java.util.BitSet
 
 class FB2Parser() : DefaultHandler() {
 
@@ -13,13 +14,18 @@ class FB2Parser() : DefaultHandler() {
     private val TITLEINFO = "title-info"
     private val TITLE = "title"
     private val SECTION = "section"
+    private val FIRSTNAME = "first-name"
+    private val LASTNAME = "last-name"
 
     private val BODY = "body"
     private val PARAGRAPH = "p"
 
+    private val BINARY = "binary"
+
     private var authorName = StringBuilder("")
     private var bookName = StringBuilder("")
     private var result = StringBuilder("")
+    private var image = StringBuilder("")
 
     private var pagesList = mutableListOf<String>()
     private var pageStrBuilder = StringBuilder("")
@@ -33,18 +39,24 @@ class FB2Parser() : DefaultHandler() {
     private var inBody = false
     private var inParagraph = false
 
+    private var inFirstName = false
+    private var inLastName = false
+    private var inBinary = false
+    private var isBinaryRead = false
 
     private val pageLen = TestUtils.getPageSize()
 
     public fun getBookAnnotation() : BookAnnotation {
         val authorName = authorName.toString().replace("\\s+".toRegex(), " ").trim()
         val bookName = bookName.toString().replace("\\s+".toRegex(), " ").trim()
-        return BookAnnotation(-1, bookName, authorName, null, 0)
+        return BookAnnotation(-1, bookName, authorName, null, 0, image.toString())
     }
 
     public fun getBookBodyParagraphes() : List<String> {
         return pagesList.toList()
     }
+
+    public fun getImage() = image
 
     override fun startDocument() {
         //super.startDocument()
@@ -106,6 +118,7 @@ class FB2Parser() : DefaultHandler() {
                 }
             }
             PARAGRAPH -> {
+                pageStrBuilder.append("\n")
                 while (pageStrBuilder.length > pageLen) {
                     var subLen = pageLen - 1
                     while (subLen < pageStrBuilder.length) {
@@ -120,6 +133,11 @@ class FB2Parser() : DefaultHandler() {
                     pageStrBuilder = StringBuilder(ost)
                 }
             }
+            BINARY -> {
+                if (image.length > 0) {
+                    isBinaryRead = true
+                }
+            }
         }
     }
 
@@ -128,29 +146,30 @@ class FB2Parser() : DefaultHandler() {
 //        if (!inTitleInfo) {
 //            return
 //        }
-        if (inAuthor && inTitleInfo) {
+        if (inAuthor && inTitleInfo && (inFirstName || inLastName)) {
             authorName.append(ch, start, length)
         }
         if (inBookTitle) {
             bookName.append(ch, start, length)
         }
         if (inSection && inParagraph) {
-            ch?.let {
-                var isWhiteSpaceBefore = false
-                for (i in start..start + length - 1) {
-//                    pageStrBuilder.append(ch[i])
-                    if (ch[i].isWhitespace()) {
-                        if (!isWhiteSpaceBefore) {
-                            pageStrBuilder.append(ch[i])
-                        }
-                        isWhiteSpaceBefore = true
-                    }
-                    if (!ch[i].isWhitespace()) {
-                        pageStrBuilder.append(ch[i])
-                        isWhiteSpaceBefore = false
-                    }
-                }
-            }
+            pageStrBuilder.append(ch, start, length)
+//            ch?.let {
+//                var isWhiteSpaceBefore = false
+//                for (i in start..start + length - 1) {
+////                    pageStrBuilder.append(ch[i])
+//                    if (ch[i].isWhitespace()) {
+//                        if (!isWhiteSpaceBefore) {
+//                            pageStrBuilder.append(ch[i])
+//                        }
+//                        isWhiteSpaceBefore = true
+//                    }
+//                    if (!ch[i].isWhitespace()) {
+//                        pageStrBuilder.append(ch[i])
+//                        isWhiteSpaceBefore = false
+//                    }
+//                }
+//            }
             //Log.i("FB2Parser", pageStrBuilder.toString())
 //            if (pageStrBuilder.length > pageLen) {
 //                val page = pageStrBuilder.substring(0, pageLen)
@@ -159,6 +178,9 @@ class FB2Parser() : DefaultHandler() {
 //                pageStrBuilder = StringBuilder(ost)
 //            }
         }
+        if (inBinary && !isBinaryRead) {
+            image.append(ch, start, length)
+        }
     }
 
     private fun setElementStatus(el : String, status : Boolean) {
@@ -166,25 +188,29 @@ class FB2Parser() : DefaultHandler() {
             AUTHOR -> {
                 inAuthor = status
             }
-
             BOOKTITLE -> {
                 inBookTitle = status
             }
-
             TITLEINFO -> {
                 inTitleInfo = status
             }
-
             BODY -> {
                 inBody = status
             }
-
             PARAGRAPH -> {
                 inParagraph = status
             }
-
             SECTION -> {
                 inSection = status
+            }
+            BINARY -> {
+                inBinary = status
+            }
+            FIRSTNAME -> {
+                inFirstName = status
+            }
+            LASTNAME -> {
+                inLastName = status
             }
         }
     }

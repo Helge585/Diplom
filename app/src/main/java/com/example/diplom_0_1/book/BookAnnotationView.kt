@@ -1,7 +1,9 @@
 package com.example.diplom_0_1.book
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.util.AttributeSet
+import android.util.Base64
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -25,7 +27,13 @@ class BookAnnotationView @JvmOverloads constructor(
         orientation = HORIZONTAL
         twBookName.setText(bookAnnotation.bookName)
         twAuthorName.setText(bookAnnotation.authorName)
-        imageView.setImageResource(R.drawable.book)
+        if (bookAnnotation.image.length == 0) {
+            imageView.setImageResource(R.drawable.book)
+        } else {
+            val ba2 = Base64.decode(bookAnnotation.image.toString(), Base64.DEFAULT)
+            val bm = BitmapFactory.decodeByteArray(ba2, 0, ba2.size)
+            imageView.setImageBitmap(bm)
+        }
         val lp = LayoutParams(100, 100)
         lp.weight = 0F
         imageView.layoutParams = lp

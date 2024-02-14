@@ -3,7 +3,9 @@ package com.example.diplom_0_1.dialogfragments
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
@@ -28,24 +30,37 @@ class CreateDictionaryDialogFragment : DialogFragment() {
             dictName.setText(bookNames[0])
         }
         bookNames.add("без книги")
+        val btClearDictName = Button(context)
+        btClearDictName.setText("Очистить")
+        btClearDictName.setOnClickListener {
+            dictName.setText("")
+        }
+        val lnLtDictInput = LinearLayout(context)
+        lnLtDictInput.orientation = LinearLayout.VERTICAL
+        lnLtDictInput.addView(dictName)
+        lnLtDictInput.addView(btClearDictName)
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle("Новый словарь")
                 .setSingleChoiceItems(
                     bookNames.toTypedArray(), 0
                 ) { dialog, item ->
-
+                    bookIndex = item
+                    dictName.setText(bookNames[item])
                 }
-                .setView(dictName)
+                .setView(lnLtDictInput)
                 .setPositiveButton("Выбрать") { dialog, id ->
-                    if (bookIndex != -1 && dictName.text.toString() != "") {
-                        DictionaryDAO.create(books[bookIndex].bookId, dictName.text.toString())
+                    if (dictName.text.toString() != "") {
+                        if (bookIndex < books.size) {
+                            DictionaryDAO.create(books[bookIndex].bookId, dictName.text.toString())
+                        } else {
+                            DictionaryDAO.create(-1, dictName.text.toString())
+                        }
                     }
                 }
                 .setNegativeButton("Отменить") { dialog, id ->
                     dismiss()
                 }
-
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
