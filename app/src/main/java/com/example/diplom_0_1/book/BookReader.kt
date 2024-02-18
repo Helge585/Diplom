@@ -8,6 +8,7 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.webkit.MimeTypeMap
 import com.example.diplom_0_1.db.BookDAO
+import com.example.diplom_0_1.setting.SettingsUtils
 import com.example.diplom_0_1.test.TestUtils
 import java.io.BufferedReader
 import java.io.File
@@ -70,7 +71,7 @@ object BookReader {
     private fun parseBook(uri: Uri, context: Context?) {
         if (getMimeType(BookReader.uri!!, context) == "text/plain") {
             val pages = mutableListOf<String>()
-            val pageLen = TestUtils.getPageSize()
+            val pageLen = SettingsUtils.getLetterCount()
             val text = parsePlainText(uri, context)
             var start = 0;
             while (start + pageLen < text.length) {

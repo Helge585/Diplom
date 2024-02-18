@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.diplom_0_1.R
+import com.example.diplom_0_1.setting.SettingsUtils
 import com.example.diplom_0_1.test.TestUtils
 
 class SettingsFragment : Fragment() {
@@ -33,6 +34,13 @@ class SettingsFragment : Fragment() {
         but2.setOnClickListener {
             TestUtils.themeMode = 1
             activity?.recreate()
+        }
+
+        val teTextSize = view.findViewById<EditText>(R.id.editTextSize)
+        val btTextSize = view.findViewById<Button>(R.id.buttonTextSize)
+        btTextSize.setOnClickListener {
+            SettingsUtils.setLetterSize(teTextSize.text.toString().toFloat())
+
         }
         return view
     }

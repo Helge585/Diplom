@@ -23,18 +23,7 @@ object TestUtils {
         result.add(TestMode("Выбрать слово на родном языке", Mode.ChoosingSecondTest))
         return result
     }
-    @JvmStatic
-    private var letterCount = 0
-    @JvmStatic
-    fun setPageSize(w : Int, h : Int, ww : Float, hh : Float) {
-        val line = w / ww
-        val str = h / hh
-        letterCount = (line * str).toInt()
-    }
-    @JvmStatic
-    fun getPageSize() : Int {
-        return letterCount
-    }
+
     @JvmStatic
     fun getTestTypeUserInterfaceName(innerName : String) : String{
         return when (innerName) {

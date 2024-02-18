@@ -9,24 +9,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diplom_0_1.R
 import com.example.diplom_0_1.fragments.ReadingFragment
+import com.example.diplom_0_1.setting.SettingsUtils
 
 class BookReadingFragmentRecyclerAdapter(private val pages: List<String>, private val fragment: ReadingFragment) :
     RecyclerView.Adapter<BookReadingFragmentRecyclerAdapter.MyViewHolder>() {
-
-    //@SuppressLint("ClickableViewAccessibility")
     inner class MyViewHolder(itemView: View, fragment: ReadingFragment) : RecyclerView.ViewHolder(itemView) {
         val textEdit: BookParagraphView = itemView.findViewById(R.id.textViewRecycler)
         init {
             textEdit.setOnFragment(fragment)
-            //textEdit.setOnTouchListener(this)
-
         }
-//        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-//            (p0 as BookParagraphView).fragment.pagesCountView.setText("Страница: ${adapterPosition + 1} / ${itemCount + 1}")
-//            BookReader.updatePage(adapterPosition)
-//            //Log.i("BookReadingFragmentRecyclerAdapter", "page = $adapterPosition")
-//            return false
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -37,10 +28,8 @@ class BookReadingFragmentRecyclerAdapter(private val pages: List<String>, privat
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.textEdit.setText(pages[position])
-        holder.textEdit.textSize = 21F
-        Log.i("Reading Fragment", "!!!123 textSize = " + holder.textEdit.textSize)
-
-        //holder.textEdit.setSelection(0, 5)
+        holder.textEdit.textSize = SettingsUtils.getFontSize()
+        //holder.textEdit.textSize = 21F
     }
 
     override fun getItemCount() = pages.size

@@ -55,8 +55,10 @@ class TranslatingFragment : Fragment(), View.OnClickListener {
         if ( transalateStatus) {
             translatedTextView.setTextColor(Color.BLACK)
             currentTranslatings = Translator.getTranslatings()
-            translatedText = currentTranslatings[0].translatings.toString()
-            translatedTextView.setText(translatedText)
+            currentTranslatings?.let {
+                translatedText = currentTranslatings[0].translatings.toString()
+                translatedTextView.setText(translatedText)
+            }
         } else {
             translatedTextView.setTextColor(Color.RED)
             translatedTextView.setText("Произошла ошибка при переводе")

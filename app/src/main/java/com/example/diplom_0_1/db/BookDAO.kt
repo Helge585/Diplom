@@ -7,7 +7,6 @@ import com.example.diplom_0_1.MainActivity
 import com.example.diplom_0_1.book.BookAnnotation
 import com.example.diplom_0_1.test.Word
 
-//"CREATE TABLE Books (id INTEGER PRIMARY KEY AUTOINCREMENT, uri TEXT UNIQUE, name TEXT, author TEXT, page INTEGER)")
 object BookDAO {
     @JvmStatic
     fun getAllBooks() : List<BookAnnotation> {

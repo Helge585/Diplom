@@ -24,35 +24,22 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         when (event?.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                // Получаем координаты нажатия
                 val x = event.x.toInt()
                 val y = event.y.toInt()
-                // Получаем Layout для TextView
-                // Получаем позицию символа, на который нажал пользователь
                 val position = layout.getOffsetForHorizontal(layout.getLineForVertical(y), x.toFloat())
-                // Получаем начальную и конечную позиции слова
                 var start = position
                 var end = position
                 val text = layout.text.toString()
-//                while (start > 0 && text[start - 1] != ' ') {
-//                    start--
-//                }
+
                 while (start > 0 && text[start - 1].isLetter()) {
                     start--
                 }
-//                while (end < text.length && text[end] != ' ') {
-//                    end++
-//                }
                 while (end < text.length && text[end].isLetter()) {
                     end++
                 }
-                // Выделяем слово
                 if (start != end) {
-                    //textEdit.setSelection(start, end)
-                    //(v as EditText).setSelection(start, end)
                     setSelection(start, end)
                     println("!!!  " + start + " " + end)
-                    //println(v.toString())
                 }
                 var sentenceStart = start
                 var sentenceEnd = end
@@ -63,10 +50,7 @@ class BookParagraphView : androidx.appcompat.widget.AppCompatEditText {
                 while (sentenceEnd < text.length && !(text[sentenceEnd] in se)) {
                     ++sentenceEnd
                 }
-//                if (sentenceEnd - sentenceStart > 50) {
-//                    sentenceEnd = sentenceStart + 50
-//                }
-                //Log.i("BookParagraphView", "selected sentence = ${text.toString().substring(sentenceStart + 1, sentenceEnd)}")
+
                 fragment.sendTranslatedWordToMainActivity(text.toString().substring(start, end),
                     text.toString().substring(sentenceStart + 1, sentenceEnd))
             }

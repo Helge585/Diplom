@@ -21,7 +21,6 @@ class BookAnnotationView @JvmOverloads constructor(
     private val twAuthorName = TextView(context)
     private val imageView: ImageView = ImageView(context)
     private val verticalLayout = LinearLayout(context)
-    //private val btStart: ImageButton = ImageButton(context)
 
     init {
         orientation = HORIZONTAL
@@ -48,30 +47,4 @@ class BookAnnotationView @JvmOverloads constructor(
         addView(verticalLayout)
         setPadding(50, 30, 50, 30)
     }
-
-//    fun setWidgets(_bookAnnotation: BookAnnotation) {
-//        orientation = HORIZONTAL
-//
-////        btStart.layoutParams.width = 50
-////        btStart.layoutParams.height = 50
-////        btStart.setLayoutParams(LayoutParams(100, 100))
-////        btStart.setImageResource(R.drawable.book)
-//        //setBackgroundColor(resources.getColor(androidx.transition.R.color.material_blue_grey_800))
-//
-////        btStart.setOnClickListener {
-////            View.findNavController().navigate(R.id.action_booksFragment_to_readingFragment)
-////        }
-//
-//        twBookName.setText(bookAnnotation.bookName)
-//        twAuthorName.setText(bookAnnotation.authorName)
-//        //twName.setTextColor(resources.getColor(R.color.white))
-//        btStart.setText("R")
-//
-//        verticalLayout.orientation = VERTICAL
-//        verticalLayout.addView(twAuthorName)
-//        verticalLayout.addView(twBookName)
-//
-//        addView(btStart)
-//        addView(verticalLayout)
-//    }
 }

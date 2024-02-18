@@ -11,6 +11,7 @@ import com.example.diplom_0_1.db.DBUtils
 import com.example.diplom_0_1.fragments.DictionariesFragment
 import com.example.diplom_0_1.fragments.DictionaryFragment
 import com.example.diplom_0_1.fragments.TranslatingFragment
+import com.example.diplom_0_1.setting.SettingsUtils
 import com.example.diplom_0_1.test.TestUtils
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -48,22 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         translatingFragment = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
 
-        val dm = resources.displayMetrics
-
-        Log.i("Main Activity", "width = " + dm.widthPixels)
-        Log.i("Main Activity", "height = " + dm.heightPixels)
-        Log.i("Main Activity", "xdpi = " + dm.xdpi)
-        Log.i("Main Activity", "ydpi = " + dm.ydpi)
-
-        val paint = Paint()
-        paint.textSize = 42F // Устанавливаем размер шрифта из ресурсов
-        val fontMetrics = paint.fontMetrics
-        val textHeightPx = fontMetrics.bottom - fontMetrics.top
-        Log.i("Main Activity", "letter height = " + textHeightPx)
-        val textWidthPx = paint.measureText("A")
-        Log.i("Main Activity", "letter width = " + textWidthPx)
-
-        TestUtils.setPageSize(dm.widthPixels, dm.heightPixels, textWidthPx, textHeightPx)
+        SettingsUtils.setDisplayMetrics(resources.displayMetrics.widthPixels,resources.displayMetrics.heightPixels, resources.displayMetrics)
     }
 
     fun setOnDictionaryEditingFragment(_deF : DictionaryFragment) {
