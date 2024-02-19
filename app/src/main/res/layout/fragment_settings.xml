@@ -6,49 +6,64 @@
     android:orientation="vertical"
     tools:context=".fragments.SettingsFragment">
 
+    <TableLayout
+        android:id="@+id/colorsTable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/defaultTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/Base.Theme.Diplom_0_1"
+                android:text="default" />
+
+            <Button
+                android:id="@+id/redTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/RedTheme"
+                android:text="red" />
+
+            <Button
+                android:id="@+id/greenTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/GreenTheme"
+                android:text="green" />
+
+            <Button
+                android:id="@+id/blueTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/BlueTheme"
+                android:text="blue" />
+        </TableRow>
+    </TableLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonSettings1"
+        <SeekBar
+            android:id="@+id/seekBar3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textSizeExample"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:theme="@style/Base.Theme.Diplom_0_1"
-            android:text="" />
+            android:text="Размер шрифта" />
 
-        <Button
-            android:id="@+id/buttonSettings2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:theme="@style/MyTheme"
-            android:text="" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/editTextSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="number" />
-
-        <Button
-            android:id="@+id/buttonTextSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Сохранить" />
     </LinearLayout>
 </LinearLayout>

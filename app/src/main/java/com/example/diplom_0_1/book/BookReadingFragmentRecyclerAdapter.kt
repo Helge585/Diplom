@@ -1,9 +1,6 @@
 package com.example.diplom_0_1.book
 
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +25,7 @@ class BookReadingFragmentRecyclerAdapter(private val pages: List<String>, privat
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.textEdit.setText(pages[position])
-        holder.textEdit.textSize = SettingsUtils.getFontSize()
+        holder.textEdit.textSize = SettingsUtils.getLetterSizeSp()
         //holder.textEdit.textSize = 21F
     }
 

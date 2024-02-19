@@ -1,9 +1,11 @@
 package com.example.diplom_0_1
 
+import android.content.res.Resources.Theme
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.widget.ThemeUtils
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -25,14 +27,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNavView : BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(SettingsUtils.getTheme())
         super.onCreate(savedInstanceState)
-        if (TestUtils.themeMode == 1) {
-            setTheme(R.style.MyTheme)
-        }
+
         setContentView(R.layout.activity_main)
 
         DBUtils.initDataBase(applicationContext)
-
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         translatingFragment = supportFragmentManager.findFragmentById(R.id.translatingFragment) as TranslatingFragment
 
-        SettingsUtils.setDisplayMetrics(resources.displayMetrics.widthPixels,resources.displayMetrics.heightPixels, resources.displayMetrics)
+        SettingsUtils.setDisplayMetrics(resources.displayMetrics)
     }
 
     fun setOnDictionaryEditingFragment(_deF : DictionaryFragment) {
