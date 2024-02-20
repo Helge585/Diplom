@@ -6,6 +6,7 @@
     android:orientation="vertical"
     tools:context=".fragments.SettingsFragment">
 
+
     <TableLayout
         android:id="@+id/colorsTable"
         android:layout_width="match_parent"
@@ -34,8 +35,8 @@
                 android:id="@+id/greenTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/GreenTheme"
-                android:text="green" />
+                android:theme="@style/GrayTheme."
+                android:text="gray" />
 
             <Button
                 android:id="@+id/blueTheme"
@@ -43,8 +44,58 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/BlueTheme"
                 android:text="blue" />
+
         </TableRow>
     </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewReadingLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Язык для чтения" />
+
+            <Spinner
+                android:id="@+id/readingLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/langs" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewTransaltingLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Язык для перевода" />
+
+            <Spinner
+                android:id="@+id/translatingLang"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:entries="@array/langs"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,4 +117,6 @@
             android:text="Размер шрифта" />
 
     </LinearLayout>
+
+
 </LinearLayout>

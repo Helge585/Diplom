@@ -2,6 +2,7 @@ package com.example.diplom_0_1.setting
 
 import android.graphics.Paint
 import android.util.DisplayMetrics
+import android.util.Log
 import com.example.diplom_0_1.R
 
 object SettingsUtils {
@@ -17,6 +18,8 @@ object SettingsUtils {
     val minLetterSizePx = 10
     @JvmStatic
     private var theme = R.style.Base_Theme_Diplom_0_1
+    var readingLang = "en"
+    var translatingLang = "ru"
     @JvmStatic
     fun getLetterCount() : Int {
         return letterCount
@@ -48,18 +51,18 @@ object SettingsUtils {
             letterCount = 0
         }
     }
-
+    @JvmStatic
     fun getLetterSizeSp(): Float {
         return letterSizePx / displayMetrics?.density!!
     }
-
+    @JvmStatic
     fun setTheme(themeStr: String) {
         theme = when(themeStr) {
             "red" -> {
                 R.style.RedTheme
             }
-            "green" -> {
-                R.style.GreenTheme
+            "gray" -> {
+                R.style.GrayTheme_
             }
             "blue" -> {
                 R.style.BlueTheme
@@ -69,6 +72,6 @@ object SettingsUtils {
             }
         }
     }
-
+    @JvmStatic
     fun getTheme() = theme
 }

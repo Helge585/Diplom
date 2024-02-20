@@ -2,4 +2,12 @@
     <string name="app_name">Diplom_0_1</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="langs">
+        <item>Английский</item>
+        <item>Русский</item>
+    </string-array>
+    <string-array name="langskey">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
 </resources>

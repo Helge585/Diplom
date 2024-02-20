@@ -1,6 +1,7 @@
 package com.example.diplom_0_1.translate
 
 import android.util.Log
+import com.example.diplom_0_1.setting.SettingsUtils
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -17,7 +18,11 @@ object Translator {
     @JvmStatic
     fun translate(word : String) {
         Thread {
-            val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94&lang=en-ru&text=$word&flags=4")
+            val url = URL("https://dictionary.yandex.net/api/v1/dicservice/lookup?" +
+                    "key=dict.1.1.20231219T204207Z.9540b67d9cf706ca.ce8ca752ce01b3e75303d82a10f1404b8e4fab94" +
+                    "&lang=${SettingsUtils.readingLang}-${SettingsUtils.translatingLang}" +
+                    "&text=$word" +
+                    "&flags=4")
 
             val con = url.openConnection() as HttpURLConnection
 
